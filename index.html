@@ -184,6 +184,7 @@
             margin: 0 auto;
             padding: 0 20px;
         }
+
         /* Navigation */
         nav {
             background: rgba(255, 255, 255, 0.95);
@@ -359,7 +360,6 @@
 
         .category-container {
             margin-bottom: 3rem;
-            align-items: center;
         }
 
         .category-title {
@@ -378,8 +378,8 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
             padding: 0 2rem;
-            max-width: 10px;
-            /* margin: 0 auto; */
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         .featured-utilities {
@@ -686,9 +686,10 @@
             opacity: 0;
             transform: translateY(20px);
         }
-        @media (max-width: 870px) {
+        @media (max-width: 768px) {
+            .affirmation-container { padding: 32px 24px; margin: 16px; }
             .affirmation-text { font-size: 1.25rem; }
-            .affirmation-card { padding: 24px; min-height: 120px; margin-top: 10rem; }
+            .affirmation-card { padding: 24px; min-height: 150px; }
         }
     </style>
 </head>
