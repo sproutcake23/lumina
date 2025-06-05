@@ -18,7 +18,133 @@
             justify-content: center;
             padding: 20px;
         }
+        .dark-mode .animated-bg {
+    background: linear-gradient(135deg, 
+        #1a1a2e 0%, 
+        #16213e 25%, 
+        #0f3460 50%, 
+        #16213e 75%, 
+        #1a1a2e 100%);
+    animation: gradientShiftBg 20s ease infinite;
+}
 
+.dark-mode nav {
+    background: rgba(44, 62, 80, 0.95);
+    color: white;
+}
+
+.dark-mode .particle {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .shape {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.dark-mode footer {
+    background: #0f0f23;
+}
+
+.dark-mode .copyright {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+            /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode nav {
+            background: rgba(44, 62, 80, 0.95);
+            color: white;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            /* flex-direction: column; */
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+                .dark-mode .nav-links a {
+            color: #ecf0f1;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+                .theme-toggle {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        header {
+           margin-top: 10rem;
+        }
         /* Animated Particle Background */
         .animated-bg {
             position: fixed;
@@ -688,6 +814,17 @@
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
             margin-top: 1rem;
         }
+         @media (max-width: 767px) {
+            header { margin-top: 15rem; }
+            .nav-container {
+                display: flex;
+                justify-content: space-between;
+                flex-direction: column;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8">
@@ -705,6 +842,23 @@
         <div class="shape"></div> <div class="shape"></div> <div class="shape"></div>
     </div>
 <div class="main-cursor" id="mainCursor"></div>
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">Lumina</div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="pages/utilities.html">Utilities</a>
+                    <a href="pages/blog.html">Blogs</a>
+                    <a href="pages/about_us.html">About Us</a>
+                    <a href="pages/contactus.html">Contact</a>
+                </div>
+                <div class="search-container">
+                    <button class="theme-toggle" onclick="toggleTheme()">🌙/☀️</button>
+                </div>
+            </div>
+        </div>
+    </nav>
     <header class="text-center mb-12">
         <h1 class="text-6xl font-extrabold text-gray-900 mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);color:white">Daily Utilities</h1>
         <p class="text-xl text-gray-600" style="color:white">Your one-stop hub for academic tools and resources.</p>
@@ -755,12 +909,10 @@
                         <label for="exam-subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
                         <select id="exam-subject">
                             <option value="Math">Math</option>
-                            <option value="Computer Science">Computer Science</option>
                             <option value="Science">Science</option>
                             <option value="History">History</option>
                             <option value="English">English</option>
                             <option value="Other">Other</option>
-                        </select>
                         </select>
                     </div>
                 </div>
@@ -830,7 +982,7 @@
             </div>
         </div>
 
-        <!-- <div class="utility-card">
+        <div class="utility-card">
             <div class="accordion-header" data-target="unit-converter-content">
                 <h2 class="text-3xl font-bold text-gray-800">Unit Converter</h2>
                 <span class="accordion-icon">&#9660;</span>
@@ -948,7 +1100,7 @@
                 </div>
                 <p class="mt-4 text-lg font-semibold text-gray-800">Result: <span id="date-result" class="text-indigo-600">--</span></p>
             </div>
-        </div> -->
+        </div>
 
         <div class="utility-card">
             <div class="accordion-header" data-target="color-picker-content">
@@ -1064,10 +1216,60 @@
     </main>
 
     <footer class="mt-12 text-center text-gray-500 text-sm">
-        <p>&copy; 2025 Student Utilities. All rights reserved.</p>
+        <p>&copy; 2025 Lumina. All rights reserved.</p>
     </footer>
 
     <script>
+                        // Theme Toggle
+      // Theme Toggle Functionality
+const themeToggle = document.querySelector('.theme-toggle');
+let isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+// Apply saved theme on load
+if (isDarkMode) {
+    document.body.classList.add('dark-mode');
+    themeToggle.textContent = '☀️ Light Mode';
+}
+
+function toggleTheme() {
+    isDarkMode = !isDarkMode;
+    document.body.classList.toggle('dark-mode', isDarkMode);
+    localStorage.setItem('darkMode', isDarkMode);
+
+    // Update button text
+    themeToggle.textContent = isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
+
+    // Update navbar background
+    updateNavbarBackground();
+}
+
+// Update navbar background based on scroll
+function updateNavbarBackground() {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 100) {
+        nav.style.background = isDarkMode 
+            ? 'rgba(15, 15, 35, 0.98)' 
+            : 'rgba(255, 255, 255, 0.98)';
+    } else {
+        nav.style.background = isDarkMode 
+            ? 'rgba(15, 15, 35, 0.95)' 
+            : 'rgba(255, 255, 255, 0.95)';
+    }
+}
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = document.body.classList.contains('dark-mode') 
+                    ? 'rgba(44, 62, 80, 0.98)' 
+                    : 'rgba(255, 255, 255, 0.98)';
+            } else {
+                nav.style.background = document.body.classList.contains('dark-mode') 
+                    ? 'rgba(44, 62, 80, 0.95)' 
+                    : 'rgba(255, 255, 255, 0.95)';
+            }
+        });
 const mainCursor = document.getElementById('mainCursor');
         let circles = [];
 
@@ -1631,7 +1833,7 @@ const mainCursor = document.getElementById('mainCursor');
             let chatHistory = [];
             chatHistory.push({ role: "user", parts: [{ text: prompt }] });
             const payload = { contents: chatHistory };
-            const apiKey = ""; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+            const apiKey = "AIzaSyDrCmZQ9EUrieO1bgf26ut0qcFhRxMxWE0"; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
             try {
