@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Links Standalone - Animated BG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f23; /* Base dark background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden; 
+            position: relative; 
+        }
+
+        /* === LAYER 1: Deepest Animated Gradient === */
+        .primary-animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2; 
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #764ba2, #667eea);
+            background-size: 300% 300%;
+            animation: gradientAnimation 18s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* === LAYER 2: Animated Bubble Background === */
+        .bubble-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; 
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: floatUpBubble linear infinite;
+            opacity: 0; 
+        }
+
+        .bubble:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-duration: 18s; animation-delay: 0s; }
+        .bubble:nth-child(2) { left: 20%; width: 60px; height: 60px; animation-duration: 22s; animation-delay: -2s; }
+        .bubble:nth-child(3) { left: 35%; width: 100px; height: 100px; animation-duration: 20s; animation-delay: -4s; }
+        .bubble:nth-child(4) { left: 50%; width: 40px; height: 40px; animation-duration: 16s; animation-delay: 0s; }
+        .bubble:nth-child(5) { left: 65%; width: 120px; height: 120px; animation-duration: 24s; animation-delay: -3s; }
+        .bubble:nth-child(6) { left: 80%; width: 50px; height: 50px; animation-duration: 19s; animation-delay: -6s; }
+        .bubble:nth-child(7) { left: 15%; width: 70px; height: 70px; animation-duration: 21s; animation-delay: -8s; }
+        .bubble:nth-child(8) { left: 75%; width: 90px; height: 90px; animation-duration: 23s; animation-delay: -1s; }
+        .bubble:nth-child(9) { left: 45%; width: 30px; height: 30px; animation-duration: 17s; animation-delay: -5s; }
+        .bubble:nth-child(10) { left: 25%; width: 110px; height: 110px; animation-duration: 25s; animation-delay: -7s; }
+        .bubble:nth-child(11) { left: 85%; width: 35px; height: 35px; animation-duration: 18s; animation-delay: -9s; }
+        .bubble:nth-child(12) { left: 5%; width: 95px; height: 95px; animation-duration: 22s; animation-delay: -2s; }
+        .bubble:nth-child(13) { left: 55%; width: 65px; height: 65px; animation-duration: 20s; animation-delay: -4s; }
+        .bubble:nth-child(14) { left: 95%; width: 45px; height: 45px; animation-duration: 19s; animation-delay: -6s; }
+        .bubble:nth-child(15) { left: 30%; width: 75px; height: 75px; animation-duration: 21s; animation-delay: -3s; }
+
+        @keyframes floatUpBubble {
+            0% {
+                bottom: -150px;
+                opacity: 0;
+                transform: translateX(0px) rotate(0deg) scale(0.8);
+            }
+            10% {
+                opacity: 0.7; 
+            }
+            20% {
+                transform: translateX(-20px) rotate(45deg) scale(1);
+            }
+            40% {
+                transform: translateX(20px) rotate(90deg) scale(1.1);
+            }
+            60% {
+                transform: translateX(-15px) rotate(180deg) scale(0.9);
+            }
+            80% {
+                transform: translateX(10px) rotate(270deg) scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                bottom: 100vh;
+                opacity: 0;
+                transform: translateX(0px) rotate(360deg) scale(0.7);
+            }
+        }
+
+        .bubble.glow {
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        .bubble.colorful:nth-child(odd) {
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.2), rgba(102, 126, 234, 0.05));
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+            border-color: rgba(102,126,234,0.3);
+        }
+        .bubble.colorful:nth-child(even) {
+            background: radial-gradient(circle, rgba(118, 75, 162, 0.2), rgba(118, 75, 162, 0.05));
+            box-shadow: 0 0 15px rgba(118, 75, 162, 0.3);
+            border-color: rgba(118,75,162,0.3);
+        }
+        /* === END OF BUBBLE BACKGROUND STYLES === */
+       .circle {
+            position:fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.3) 70%, transparent 100%);
+            transform: translate(-50%, -50%);
+            animation: fadeOut 1s ease-out forwards;
+            z-index:4;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+        }
+
+        .main-cursor {
+            position:fixed;
+            width: 10px;
+            height: 10px;
+            border: 2px solid white;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+            z-index:4;
+        }
+
+        /* Utility Card Container */
+        .utility-card {
+            background: rgba(90, 70, 140, 0.85); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 255, 255, 0.15); 
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4); 
+            position: relative; 
+            z-index: 1;
+        }
+
+        .utility-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 0.75rem;
+        }
+        .input-group:last-of-type {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            text-align: left;
+            margin-bottom: 0.35rem;
+             color: rgba(255,255,255,0.9); 
+             font-size: 0.85rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.25); 
+            background: rgba(255, 255, 255, 0.15);  
+            color: white;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.7); 
+        }
+
+        .input-field:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+            background: rgba(255, 255, 255, 0.18); 
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.2rem;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-align: center;
+        }
+
+        /* MODIFIED: Button styles to match image */
+        .btn-primary {
+            background: linear-gradient(135deg, #7879F1, #5C41C0);
+            color: white;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.25);
+            background: linear-gradient(135deg, #8384F3, #6A50C9); /* Slightly lighter for hover */
+        }
+
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            filter: grayscale(50%);
+        }
+
+        .resource-list {
+            max-height: 250px;
+            overflow-y: auto;
+            margin-top: 1.5rem;
+            padding-right: 0.5rem;
+            text-align: left;
+        }
+
+        .resource-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        .resource-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        .resource-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+        .resource-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+
+        .resource-item {
+            background: rgba(255, 255, 255, 0.12); 
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .resource-item:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .resource-item a {
+            flex-grow: 1;
+            text-align: left;
+            text-decoration: none;
+            color: #add8e6;
+            font-weight: 500;
+            font-size: 0.95rem;
+            word-break: break-all;
+            transition: color 0.2s ease;
+        }
+        .resource-item a:hover {
+            color: #86efac;
+            text-decoration: underline;
+        }
+        .resource-item .resource-title {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+            display: block;
+            font-size: 1rem;
+        }
+        .resource-item .resource-category {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7); 
+            background: rgba(255, 255, 255, 0.15); 
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            margin-left: 0.5rem;
+            white-space: nowrap;
+        }
+        .resource-item .resource-url {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8); 
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+        .resource-item .delete-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7); 
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0.3rem;
+            border-radius: 50%;
+            transition: color 0.2s ease, background 0.2s ease;
+            flex-shrink: 0;
+        }
+        .resource-item .delete-btn:hover {
+            color: #ff6b6b;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .status-message {
+            padding: 0.7rem 1.2rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: white;
+            text-align: center;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 4rem);
+            box-sizing: border-box;
+            z-index: 10;
+        }
+        .status-message.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .status-success {
+            background: linear-gradient(45deg, #4CAF50, #8bc34a);
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+        }
+        .status-error {
+            background: linear-gradient(45deg, #f44336, #e91e63);
+            box-shadow: 0 4px 10px rgba(244, 67, 54, 0.3);
+        }
+        .status-info {
+            background: linear-gradient(45deg, #2196f3, #03a9f4);
+            box-shadow: 0 4px 10px rgba(33, 150, 243, 0.3);
+        }
+
+        @media (max-width: 500px) {
+            .utility-card {
+                padding: 1.5rem;
+                border-radius: 15px;
+            }
+            .utility-title {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            .input-field, .btn {
+                font-size: 0.9rem;
+            }
+            .resource-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+                padding: 0.7rem 0.8rem;
+            }
+            .resource-item a {
+                flex-grow: unset;
+                width: 100%;
+                font-size: 0.9rem;
+            }
+            .resource-item .delete-btn {
+                position: absolute;
+                top: 0.5rem;
+                right: 0.5rem;
+                font-size: 1rem;
+            }
+            .resource-item .resource-title {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: 0.95rem;
+            }
+            .resource-item .resource-category {
+                font-size: 0.7rem;
+                padding: 0.15rem 0.4rem;
+            }
+            .resource-item .resource-url {
+                font-size: 0.75rem;
+            }
+            .status-message {
+                width: calc(100% - 3rem);
+                bottom: 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Layer 1: Deepest Animated Gradient -->
+    <div class="primary-animated-bg"></div>
+
+    <!-- Layer 2: Animated Bubble Background -->
+    <div class="bubble-background">
+        <div class="bubble glow"></div>
+        <div class="bubble colorful"></div>
+        <div class="bubble"></div>
+        <div class="bubble glow"></div>
+        <div class="bubble colorful"></div>
+        <div class="bubble"></div>
+        <div class="bubble glow"></div>
+        <div class="bubble colorful"></div>
+        <div class="bubble"></div>
+        <div class="bubble glow"></div>
+        <div class="bubble colorful"></div>
+        <div class="bubble"></div>
+        <div class="bubble glow"></div>
+        <div class="bubble colorful"></div>
+        <div class="bubble"></div>
+    </div>
+
+     <div class="main-cursor" id="mainCursor"></div>
+    <!-- Main Content Card -->
+    <div class="utility-card">
+        <h3 class="utility-title">Resource Links</h3>
+        <div class="input-group">
+            <label for="resource-url">Link URL</label>
+            <input type="url" id="resource-url" class="input-field" placeholder="e.g., https://example.com" required>
+        </div>
+        <div class="input-group">
+            <label for="resource-title">Title</label>
+            <input type="text" id="resource-title" class="input-field" placeholder="e.g., Physics Lecture Notes" required>
+        </div>
+        <div class="input-group">
+            <label for="resource-category">Category (Optional)</label>
+            <input type="text" id="resource-category" class="input-field" placeholder="e.g., Math, History, Exam Prep">
+        </div>
+        <button id="add-resource-btn" class="btn btn-primary" style="width: 100%;">➕ Add Link</button>
+        <div id="resource-list" class="resource-list">
+            <!-- Resources will be dynamically inserted here -->
+        </div>
+        <div id="resource-status-message" class="status-message hidden"></div>
+    </div>
+
+    <script>
+const mainCursor = document.getElementById('mainCursor');
+        let circles = [];
+
+        // Track mouse movement
+        document.addEventListener('mousemove', (e) => {
+            // Update main cursor position
+            mainCursor.style.left = e.clientX + 'px';
+            mainCursor.style.top = e.clientY + 'px';
+
+            // Create trailing circle
+            createCircle(e.clientX, e.clientY);
+        });
+
+        function createCircle(x, y) {
+            const circle = document.createElement('div');
+            circle.className = 'circle';
+            
+            // Random size between 10-30px
+            const size = Math.random() * 10 + 5;
+            circle.style.width = size + 'px';
+            circle.style.height = size + 'px';
+            
+            // Position the circle
+            circle.style.left = x + 'px';
+            circle.style.top = y + 'px';
+            
+            // Random color tint
+            const hue = Math.random() * 360;
+            circle.style.background = `radial-gradient(circle, hsla(${hue}, 70%, 80%, 0.8) 0%, hsla(${hue}, 70%, 80%, 0.3) 70%, transparent 100%)`;
+            
+            document.body.appendChild(circle);
+            circles.push(circle);
+
+            // Remove circle after animation completes
+            setTimeout(() => {
+                if (circle.parentNode) {
+                    circle.parentNode.removeChild(circle);
+                }
+                circles = circles.filter(c => c !== circle);
+            }, 1000);
+        }
+
+        // Clean up circles periodically to prevent memory issues
+        setInterval(() => {
+            circles.forEach(circle => {
+                if (!circle.parentNode) {
+                    circles = circles.filter(c => c !== circle);
+                }
+            });
+        }, 5000);
+
+        // Hide cursor when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            mainCursor.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            mainCursor.style.opacity = '1';
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            function showStatus(elementId, message, type = 'info') {
+                const statusElement = document.getElementById(elementId);
+                if (statusElement) {
+                    statusElement.textContent = message;
+                    statusElement.className = `status-message status-${type}`;
+                    if (statusElement.hideTimeout) {
+                        clearTimeout(statusElement.hideTimeout);
+                    }
+                    statusElement.hideTimeout = setTimeout(() => {
+                        statusElement.classList.add('hidden');
+                    }, 3000);
+                }
+            }
+
+            const resourceUrlInput = document.getElementById('resource-url');
+            const resourceTitleInput = document.getElementById('resource-title');
+            const resourceCategoryInput = document.getElementById('resource-category');
+            const addResourceBtn = document.getElementById('add-resource-btn');
+            const resourceList = document.getElementById('resource-list');
+            let resources = [];
+
+            function loadResources() {
+                const savedResources = localStorage.getItem('studentHubResources');
+                if (savedResources) {
+                    resources = JSON.parse(savedResources);
+                }
+                renderResources();
+            }
+
+            function saveResources() {
+                localStorage.setItem('studentHubResources', JSON.stringify(resources));
+            }
+
+            function renderResources() {
+                resourceList.innerHTML = '';
+                if (resources.length === 0) {
+                    resourceList.innerHTML = '<p style="color: rgba(255,255,255,0.7); font-style: italic; text-align: center; margin-top: 1rem;">No resources added yet.</p>';
+                    return;
+                }
+
+                resources.forEach((resource, index) => {
+                    const resourceItem = document.createElement('div');
+                    resourceItem.className = 'resource-item';
+                    const resourceLink = document.createElement('a');
+                    resourceLink.href = resource.url;
+                    resourceLink.target = '_blank';
+                    resourceLink.rel = 'noopener noreferrer';
+                    const contentDiv = document.createElement('div');
+                    contentDiv.style.flexGrow = '1';
+                    const titleSpan = document.createElement('span');
+                    titleSpan.className = 'resource-title';
+                    titleSpan.textContent = resource.title;
+                    contentDiv.appendChild(titleSpan);
+                    if (resource.category) {
+                        const categorySpan = document.createElement('span');
+                        categorySpan.className = 'resource-category';
+                        categorySpan.textContent = resource.category;
+                        titleSpan.appendChild(categorySpan);
+                    }
+                    const urlSpan = document.createElement('span');
+                    urlSpan.className = 'resource-url';
+                    urlSpan.textContent = resource.url;
+                    contentDiv.appendChild(urlSpan);
+                    resourceLink.appendChild(contentDiv);
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'delete-btn';
+                    deleteBtn.innerHTML = '🗑️';
+                    deleteBtn.title = 'Delete resource';
+                    deleteBtn.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        deleteResource(index);
+                    });
+                    resourceItem.appendChild(resourceLink);
+                    resourceItem.appendChild(deleteBtn);
+                    resourceList.appendChild(resourceItem);
+                });
+            }
+
+            function addResource() {
+                const url = resourceUrlInput.value.trim();
+                const title = resourceTitleInput.value.trim();
+                const category = resourceCategoryInput.value.trim();
+                if (!url || !title) {
+                    showStatus('resource-status-message', 'URL and Title are required.', 'error');
+                    return;
+                }
+                try {
+                    new URL(url);
+                } catch (e) {
+                    showStatus('resource-status-message', 'Please enter a valid URL (e.g., https://example.com).', 'error');
+                    return;
+                }
+                const newResource = { url, title, category };
+                resources.push(newResource);
+                saveResources();
+                renderResources();
+                showStatus('resource-status-message', 'Resource added successfully!', 'success');
+                resourceUrlInput.value = '';
+                resourceTitleInput.value = '';
+                resourceCategoryInput.value = '';
+            }
+
+            function deleteResource(index) {
+                if (confirm('Are you sure you want to delete this resource?')) {
+                    resources.splice(index, 1);
+                    saveResources();
+                    renderResources();
+                    showStatus('resource-status-message', 'Resource deleted.', 'info');
+                }
+            }
+
+            addResourceBtn.addEventListener('click', addResource);
+            loadResources();
+        });
+    </script>
+</body>
+</html>

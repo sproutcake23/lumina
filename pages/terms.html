@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - StudentUtil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+ .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2; /* Ensure this is behind other background elements like floating-shapes */
+            /* MODIFIED: Expanded gradient for better animation, added background-size and animation */
+            background: linear-gradient(135deg, 
+                #667eea 0%, 
+                #764ba2 25%, 
+                #f093fb 50%, 
+                #764ba2 75%, 
+                #667eea 100%);
+            background-size: 400% 400%;
+            animation: gradientShiftBg 15s ease infinite;
+            overflow: hidden;
+        }
+
+        /* NEW Keyframes for the .animated-bg gradient shift */
+        @keyframes gradientShiftBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float-up linear infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; width: 20px; height: 20px; animation-duration: 8s; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; width: 15px; height: 15px; animation-duration: 12s; animation-delay: 1s; }
+        .particle:nth-child(3) { left: 25%; width: 10px; height: 10px; animation-duration: 6s; animation-delay: 2s; }
+        .particle:nth-child(4) { left: 40%; width: 25px; height: 25px; animation-duration: 10s; animation-delay: 0.5s; }
+        .particle:nth-child(5) { left: 70%; width: 12px; height: 12px; animation-duration: 7s; animation-delay: 3s; }
+        .particle:nth-child(6) { left: 80%; width: 18px; height: 18px; animation-duration: 9s; animation-delay: 1.5s; }
+        .particle:nth-child(7) { left: 32%; width: 8px; height: 8px; animation-duration: 11s; animation-delay: 4s; }
+        .particle:nth-child(8) { left: 55%; width: 22px; height: 22px; animation-duration: 8.5s; animation-delay: 2.5s; }
+        .particle:nth-child(9) { left: 15%; width: 14px; height: 14px; animation-duration: 13s; animation-delay: 0.8s; }
+        .particle:nth-child(10) { left: 85%; width: 16px; height: 16px; animation-duration: 7.5s; animation-delay: 3.5s; }
+        .particle:nth-child(11) { left: 65%; width: 11px; height: 11px; animation-duration: 9.5s; animation-delay: 1.2s; }
+        .particle:nth-child(12) { left: 90%; width: 19px; height: 19px; animation-duration: 6.5s; animation-delay: 4.5s; }
+        .particle:nth-child(13) { left: 5%; width: 13px; height: 13px; animation-duration: 10.5s; animation-delay: 0.3s; }
+        .particle:nth-child(14) { left: 45%; width: 9px; height: 9px; animation-duration: 8.8s; animation-delay: 2.8s; }
+        .particle:nth-child(15) { left: 75%; width: 17px; height: 17px; animation-duration: 12.5s; animation-delay: 1.8s; }
+        .particle:nth-child(16) { left: 35%; width: 21px; height: 21px; animation-duration: 7.8s; animation-delay: 3.8s; }
+        .particle:nth-child(17) { left: 60%; width: 7px; height: 7px; animation-duration: 11.5s; animation-delay: 0.1s; }
+        .particle:nth-child(18) { left: 95%; width: 23px; height: 23px; animation-duration: 9.8s; animation-delay: 4.8s; }
+        .particle:nth-child(19) { left: 50%; width: 12px; height: 12px; animation-duration: 6.8s; animation-delay: 2.1s; }
+        .particle:nth-child(20) { left: 8%; width: 24px; height: 24px; animation-duration: 13.5s; animation-delay: 1.1s; }
+
+        @keyframes float-up {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .floating-shapes {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; /* Ensure shapes are behind particles slightly, but above main bg */
+            pointer-events: none;
+        }
+        .shape {
+            position: absolute; background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%; animation: gentle-float 15s ease-in-out infinite;
+        }
+        .shape:nth-child(1) { width: 120px; height: 120px; left: 5%; top: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 80px; height: 80px; right: 10%; top: 70%; animation-delay: -5s; }
+        .shape:nth-child(3) { width: 60px; height: 60px; left: 80%; top: 20%; animation-delay: -10s; }
+
+        @keyframes gentle-float {
+            0%, 100% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0.3; }
+            25% { transform: translateY(-20px) translateX(10px) scale(1.1); opacity: 0.5; }
+            50% { transform: translateY(-10px) translateX(-10px) scale(0.9); opacity: 0.7; }
+            75% { transform: translateY(-30px) translateX(5px) scale(1.05); opacity: 0.4; }
+        }
+          .circle {
+            position:fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.3) 70%, transparent 100%);
+            transform: translate(-50%, -50%);
+            animation: fadeOut 1s ease-out forwards;
+            z-index:4;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+        }
+
+        .main-cursor {
+            position:fixed;
+            width: 10px;
+            height: 10px;
+            border: 2px solid white;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+            z-index:4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .header h1 {
+            color: #2563eb;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .effective-date {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+            font-style: italic;
+            color: #475569;
+        }
+
+        h2 {
+            color: #1e40af;
+            font-size: 1.5rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        h3 {
+            color: #3730a3;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background: #fef3c7;
+            padding: 15px;
+            border-left: 4px solid #f59e0b;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .legal-notice {
+            background: #fee2e2;
+            padding: 15px;
+            border-left: 4px solid #ef4444;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+            font-weight: 500;
+        }
+
+        .contact-info {
+            background: #eff6ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border: 1px solid #bfdbfe;
+        }
+
+        .contact-info h2 {
+            border-bottom: none;
+            margin-top: 0;
+            color: #1d4ed8;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2563eb;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+        }
+
+        .toc {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+            color: #1e40af;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            margin-bottom: 5px;
+        }
+
+        .toc a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            .back-to-top {
+                bottom: 15px;
+                right: 15px;
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+ <div class="animated-bg">
+        <div class="particles">
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+        </div>
+    </div>
+
+    <div class="floating-shapes">
+        <div class="shape"></div> <div class="shape"></div> <div class="shape"></div>
+    </div>
+<div class="main-cursor" id="mainCursor"></div>
+    <div class="container">
+        <div class="header">
+            <h1>Terms of Service</h1>
+            <div class="subtitle">StudentUtil</div>
+        </div>
+
+        <div class="effective-date">
+            <strong>Effective Date:</strong> 03-06-2025<br>
+            <strong>Last Updated:</strong> 03-06-2025
+        </div>
+
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#acceptance">1. Acceptance of Terms</a></li>
+                <li><a href="#description">2. Description of Service</a></li>
+                <li><a href="#accounts">3. User Accounts</a></li>
+                <li><a href="#acceptable-use">4. Acceptable Use Policy</a></li>
+                <li><a href="#user-content">5. User Content</a></li>
+                <li><a href="#intellectual-property">6. Intellectual Property</a></li>
+                <li><a href="#privacy">7. Privacy and Data Protection</a></li>
+                <li><a href="#academic-integrity">8. Academic Integrity</a></li>
+                <li><a href="#service-availability">9. Service Availability</a></li>
+                <li><a href="#payment">10. Payment and Subscriptions</a></li>
+                <li><a href="#liability">11. Limitation of Liability</a></li>
+                <li><a href="#indemnification">12. Indemnification</a></li>
+                <li><a href="#termination">13. Termination</a></li>
+                <li><a href="#disputes">14. Dispute Resolution</a></li>
+                <li><a href="#general">15. General Provisions</a></li>
+                <li><a href="#changes">16. Changes to Terms</a></li>
+                <li><a href="#contact">17. Contact Information</a></li>
+            </ul>
+        </div>
+
+        <section id="acceptance">
+            <h2>1. Acceptance of Terms</h2>
+            <p>By accessing or using StudentUtil ("we," "us," or "our"), you ("user" or "you") agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use our service.</p>
+        </section>
+
+        <section id="description">
+            <h2>2. Description of Service</h2>
+            <p>StudentUtil is a platform designed to provide educational tools, resources, and utilities to help students with their academic needs. Our services may include but are not limited to study materials, organizational tools, calculators, and educational content.</p>
+        </section>
+
+        <section id="accounts">
+            <h2>3. User Accounts</h2>
+            
+            <h3>3.1 Account Creation</h3>
+            <ul>
+                <li>You must provide accurate and complete information when creating an account</li>
+                <li>You are responsible for maintaining the confidentiality of your account credentials</li>
+                <li>You must be at least 13 years old to create an account</li>
+                <li>Users under 18 must have parental consent</li>
+            </ul>
+
+            <h3>3.2 Account Responsibility</h3>
+            <ul>
+                <li>You are responsible for all activities that occur under your account</li>
+                <li>You must notify us immediately of any unauthorized use of your account</li>
+                <li>We reserve the right to suspend or terminate accounts that violate these Terms</li>
+            </ul>
+        </section>
+
+        <section id="acceptable-use">
+            <h2>4. Acceptable Use Policy</h2>
+            
+            <h3>4.1 Permitted Uses</h3>
+            <p>You may use StudentUtil for lawful educational purposes, including:</p>
+            <ul>
+                <li>Accessing study materials and educational resources</li>
+                <li>Using academic tools and calculators</li>
+                <li>Organizing your study schedule and materials</li>
+                <li>Collaborating with other students on appropriate projects</li>
+            </ul>
+
+            <h3>4.2 Prohibited Uses</h3>
+            <p>You may not:</p>
+            <ul>
+                <li>Use the service for any illegal or unauthorized purpose</li>
+                <li>Share, distribute, or sell content that violates copyright laws</li>
+                <li>Engage in academic dishonesty, including cheating or plagiarism</li>
+                <li>Upload malicious code, viruses, or harmful content</li>
+                <li>Harass, threaten, or intimidate other users</li>
+                <li>Attempt to gain unauthorized access to our systems</li>
+                <li>Use automated tools to scrape or download content without permission</li>
+            </ul>
+        </section>
+
+        <section id="user-content">
+            <h2>5. User Content</h2>
+            
+            <h3>5.1 Content Ownership</h3>
+            <ul>
+                <li>You retain ownership of content you create and upload</li>
+                <li>By uploading content, you grant us a license to use, display, and distribute it as necessary to provide our services</li>
+                <li>You represent that you have the right to upload and share any content you submit</li>
+            </ul>
+
+            <h3>5.2 Content Standards</h3>
+            <p>All user content must:</p>
+            <ul>
+                <li>Comply with applicable laws and regulations</li>
+                <li>Respect intellectual property rights</li>
+                <li>Be appropriate for an educational environment</li>
+                <li>Not contain harmful, offensive, or inappropriate material</li>
+            </ul>
+        </section>
+
+        <section id="intellectual-property">
+            <h2>6. Intellectual Property</h2>
+            
+            <h3>6.1 Our Content</h3>
+            <ul>
+                <li>StudentUtil and its content are protected by copyright, trademark, and other intellectual property laws</li>
+                <li>You may not reproduce, distribute, or create derivative works without our written permission</li>
+                <li>Our trademarks and logos may not be used without authorization</li>
+            </ul>
+
+            <h3>6.2 Educational Fair Use</h3>
+            <ul>
+                <li>We respect educational fair use principles</li>
+                <li>Users should cite sources appropriately and respect copyright limitations</li>
+                <li>Commercial use of educational materials may require additional permissions</li>
+            </ul>
+        </section>
+
+        <section id="privacy">
+            <h2>7. Privacy and Data Protection</h2>
+            <ul>
+                <li>Your privacy is important to us</li>
+                <li>Our collection and use of personal information is governed by our Privacy Policy</li>
+                <li>We implement appropriate security measures to protect your data</li>
+                <li>You have rights regarding your personal information as described in our Privacy Policy</li>
+            </ul>
+        </section>
+
+        <section id="academic-integrity">
+            <h2>8. Academic Integrity</h2>
+            
+            <div class="highlight">
+                <strong>Important:</strong> StudentUtil is committed to supporting academic integrity and honest learning practices.
+            </div>
+
+            <h3>8.1 Honor Code</h3>
+            <ul>
+                <li>StudentUtil supports academic integrity and honest learning</li>
+                <li>Users must not use our platform to facilitate cheating or plagiarism</li>
+                <li>We encourage proper citation and attribution of sources</li>
+            </ul>
+
+            <h3>8.2 Reporting Violations</h3>
+            <ul>
+                <li>Users should report suspected academic dishonesty</li>
+                <li>We cooperate with educational institutions regarding integrity violations</li>
+                <li>Violations may result in account suspension or termination</li>
+            </ul>
+        </section>
+
+        <section id="service-availability">
+            <h2>9. Service Availability</h2>
+            
+            <h3>9.1 Uptime and Access</h3>
+            <ul>
+                <li>We strive to maintain service availability but cannot guarantee uninterrupted access</li>
+                <li>Scheduled maintenance may temporarily limit service availability</li>
+                <li>We are not liable for service interruptions beyond our reasonable control</li>
+            </ul>
+
+            <h3>9.2 Service Modifications</h3>
+            <ul>
+                <li>We may modify, update, or discontinue features at any time</li>
+                <li>We will provide reasonable notice of significant changes when possible</li>
+                <li>Continued use of the service constitutes acceptance of modifications</li>
+            </ul>
+        </section>
+
+        <section id="payment">
+            <h2>10. Payment and Subscriptions</h2>
+            
+            <h3>10.1 Free and Paid Services</h3>
+            <ul>
+                <li>Some features may be available for free, while others require payment</li>
+                <li>Subscription fees are charged in advance and are non-refundable unless otherwise specified</li>
+                <li>We reserve the right to change pricing with appropriate notice</li>
+            </ul>
+
+            <h3>10.2 Billing</h3>
+            <ul>
+                <li>Payments are processed securely through third-party payment processors</li>
+                <li>You are responsible for providing accurate billing information</li>
+                <li>Failed payments may result in service suspension</li>
+            </ul>
+        </section>
+
+        <section id="liability">
+            <h2>11. Limitation of Liability</h2>
+            
+            <div class="legal-notice">
+                <strong>TO THE MAXIMUM EXTENT PERMITTED BY LAW:</strong>
+                <ul>
+                    <li>StudentUtil is provided "as is" without warranties of any kind</li>
+                    <li>We are not liable for indirect, incidental, or consequential damages</li>
+                    <li>Our total liability is limited to the amount you paid for the service in the past 12 months</li>
+                    <li>We are not responsible for third-party content or services</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="indemnification">
+            <h2>12. Indemnification</h2>
+            <p>You agree to indemnify and hold harmless StudentUtil, its officers, directors, employees, and agents from any claims, damages, or expenses arising from:</p>
+            <ul>
+                <li>Your use of the service</li>
+                <li>Your violation of these Terms</li>
+                <li>Your violation of any third-party rights</li>
+                <li>Content you submit or share</li>
+            </ul>
+        </section>
+
+        <section id="termination">
+            <h2>13. Termination</h2>
+            
+            <h3>13.1 Termination by You</h3>
+            <ul>
+                <li>You may terminate your account at any time</li>
+                <li>Upon termination, your right to use the service ceases immediately</li>
+                <li>Some provisions of these Terms survive termination</li>
+            </ul>
+
+            <h3>13.2 Termination by Us</h3>
+            <p>We may suspend or terminate your account if:</p>
+            <ul>
+                <li>You violate these Terms</li>
+                <li>You engage in fraudulent or illegal activity</li>
+                <li>We discontinue the service</li>
+                <li>Required by law or legal process</li>
+            </ul>
+        </section>
+
+        <section id="disputes">
+            <h2>14. Dispute Resolution</h2>
+            
+            <h3>14.1 Governing Law</h3>
+            <p>These Terms are governed by the laws of [Your Jurisdiction], without regard to conflict of law principles.</p>
+
+            <h3>14.2 Dispute Process</h3>
+            <ul>
+                <li>We encourage resolving disputes through direct communication</li>
+                <li>Mediation may be used before pursuing legal action</li>
+                <li>Any legal proceedings must be brought in the courts of [Your Jurisdiction]</li>
+            </ul>
+        </section>
+
+        <section id="general">
+            <h2>15. General Provisions</h2>
+            
+            <h3>15.1 Entire Agreement</h3>
+            <p>These Terms constitute the entire agreement between you and StudentUtil regarding the service.</p>
+
+            <h3>15.2 Severability</h3>
+            <p>If any provision of these Terms is found unenforceable, the remainder will remain in full force and effect.</p>
+
+            <h3>15.3 No Waiver</h3>
+            <p>Our failure to enforce any provision does not constitute a waiver of that provision.</p>
+
+            <h3>15.4 Assignment</h3>
+            <p>You may not assign these Terms without our consent. We may assign these Terms at any time.</p>
+        </section>
+
+        <section id="changes">
+            <h2>16. Changes to Terms</h2>
+            <ul>
+                <li>We may update these Terms periodically</li>
+                <li>Material changes will be communicated through email or service notifications</li>
+                <li>Continued use of the service after changes constitutes acceptance</li>
+                <li>You should review these Terms regularly</li>
+            </ul>
+        </section>
+
+        <section id="contact">
+            <div class="contact-info">
+                <h2>17. Contact Information</h2>
+                <p>If you have questions about these Terms of Service, please contact us at:</p>
+                <p>
+                    <strong>Email:</strong> [your-email@studentutil.com]<br>
+                    <strong>Address:</strong> [Your Business Address]<br>
+                    <strong>Phone:</strong> [Your Phone Number]
+                </p>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0; font-style: italic; color: #64748b;">
+            <p><em>By using StudentUtil, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.</em></p>
+        </div>
+    </div>
+
+    <a href="#" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">↑ Top</a>
+
+    <script>
+   <script>
+const mainCursor = document.getElementById('mainCursor');
+        let circles = [];
+
+        // Track mouse movement
+        document.addEventListener('mousemove', (e) => {
+            // Update main cursor position
+            mainCursor.style.left = e.clientX + 'px';
+            mainCursor.style.top = e.clientY + 'px';
+
+            // Create trailing circle
+            createCircle(e.clientX, e.clientY);
+        });
+
+        function createCircle(x, y) {
+            const circle = document.createElement('div');
+            circle.className = 'circle';
+            
+            // Random size between 10-30px
+            const size = Math.random() * 10 + 5;
+            circle.style.width = size + 'px';
+            circle.style.height = size + 'px';
+            
+            // Position the circle
+            circle.style.left = x + 'px';
+            circle.style.top = y + 'px';
+            
+            // Random color tint
+            const hue = Math.random() * 360;
+            circle.style.background = `radial-gradient(circle, hsla(${hue}, 70%, 80%, 0.8) 0%, hsla(${hue}, 70%, 80%, 0.3) 70%, transparent 100%)`;
+            
+            document.body.appendChild(circle);
+            circles.push(circle);
+
+            // Remove circle after animation completes
+            setTimeout(() => {
+                if (circle.parentNode) {
+                    circle.parentNode.removeChild(circle);
+                }
+                circles = circles.filter(c => c !== circle);
+            }, 1000);
+        }
+
+        // Clean up circles periodically to prevent memory issues
+        setInterval(() => {
+            circles.forEach(circle => {
+                if (!circle.parentNode) {
+                    circles = circles.filter(c => c !== circle);
+                }
+            });
+        }, 5000);
+
+        // Hide cursor when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            mainCursor.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            mainCursor.style.opacity = '1';
+        });
+        // Show/hide back to top button
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTop.style.display = 'block';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

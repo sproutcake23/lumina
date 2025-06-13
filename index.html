@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Utilities - Your Academic Companion</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+      
+         .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(135deg, 
+                #667eea 0%, 
+                #764ba2 25%, 
+                #f093fb 50%, 
+                #764ba2 75%, 
+                #667eea 100%);
+            background-size: 400% 400%;
+            animation: gradientShiftBg 15s ease infinite;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShiftBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float-up linear infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; width: 20px; height: 20px; animation-duration: 8s; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; width: 15px; height: 15px; animation-duration: 12s; animation-delay: 1s; }
+        .particle:nth-child(3) { left: 25%; width: 10px; height: 10px; animation-duration: 6s; animation-delay: 2s; }
+        .particle:nth-child(4) { left: 40%; width: 25px; height: 25px; animation-duration: 10s; animation-delay: 0.5s; }
+        .particle:nth-child(5) { left: 70%; width: 12px; height: 12px; animation-duration: 7s; animation-delay: 3s; }
+        .particle:nth-child(6) { left: 80%; width: 18px; height: 18px; animation-duration: 9s; animation-delay: 1.5s; }
+        .particle:nth-child(7) { left: 32%; width: 8px; height: 8px; animation-duration: 11s; animation-delay: 4s; }
+        .particle:nth-child(8) { left: 55%; width: 22px; height: 22px; animation-duration: 8.5s; animation-delay: 2.5s; }
+        .particle:nth-child(9) { left: 15%; width: 14px; height: 14px; animation-duration: 13s; animation-delay: 0.8s; }
+        .particle:nth-child(10) { left: 85%; width: 16px; height: 16px; animation-duration: 7.5s; animation-delay: 3.5s; }
+        .particle:nth-child(11) { left: 65%; width: 11px; height: 11px; animation-duration: 9.5s; animation-delay: 1.2s; }
+        .particle:nth-child(12) { left: 90%; width: 19px; height: 19px; animation-duration: 6.5s; animation-delay: 4.5s; }
+        .particle:nth-child(13) { left: 5%; width: 13px; height: 13px; animation-duration: 10.5s; animation-delay: 0.3s; }
+        .particle:nth-child(14) { left: 45%; width: 9px; height: 9px; animation-duration: 8.8s; animation-delay: 2.8s; }
+        .particle:nth-child(15) { left: 75%; width: 17px; height: 17px; animation-duration: 12.5s; animation-delay: 1.8s; }
+        .particle:nth-child(16) { left: 35%; width: 21px; height: 21px; animation-duration: 7.8s; animation-delay: 3.8s; }
+        .particle:nth-child(17) { left: 60%; width: 7px; height: 7px; animation-duration: 11.5s; animation-delay: 0.1s; }
+        .particle:nth-child(18) { left: 95%; width: 23px; height: 23px; animation-duration: 9.8s; animation-delay: 4.8s; }
+        .particle:nth-child(19) { left: 50%; width: 12px; height: 12px; animation-duration: 6.8s; animation-delay: 2.1s; }
+        .particle:nth-child(20) { left: 8%; width: 24px; height: 24px; animation-duration: 13.5s; animation-delay: 1.1s; }
+
+        @keyframes float-up {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .floating-shapes {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; /* Ensure shapes are behind particles slightly, but above main bg */
+            pointer-events: none;
+        }
+        .shape {
+            position: absolute; background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%; animation: gentle-float 15s ease-in-out infinite;
+        }
+        .shape:nth-child(1) { width: 120px; height: 120px; left: 5%; top: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 80px; height: 80px; right: 10%; top: 70%; animation-delay: -5s; }
+        .shape:nth-child(3) { width: 60px; height: 60px; left: 80%; top: 20%; animation-delay: -10s; }
+
+        @keyframes gentle-float {
+            0%, 100% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0.3; }
+            25% { transform: translateY(-20px) translateX(10px) scale(1.1); opacity: 0.5; }
+            50% { transform: translateY(-10px) translateX(-10px) scale(0.9); opacity: 0.7; }
+            75% { transform: translateY(-30px) translateX(5px) scale(1.05); opacity: 0.4; }
+        }
+          .circle {
+            position:fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.3) 70%, transparent 100%);
+            transform: translate(-50%, -50%);
+            animation: fadeOut 1s ease-out forwards;
+            z-index:4;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+        }
+
+        .main-cursor {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            border: 2px solid white;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+            z-index:4;
+        }
+    /* Dark Mode Specific Styles */
+.dark-mode .animated-bg {
+    background: linear-gradient(135deg, 
+        #1a1a2e 0%, 
+        #16213e 25%, 
+        #0f3460 50%, 
+        #16213e 75%, 
+        #1a1a2e 100%);
+    animation: gradientShiftBg 20s ease infinite;
+}
+
+.dark-mode .particle {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .shape {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.dark-mode .utilities-section {
+    background: rgba(30, 30, 46, 0.5);
+    backdrop-filter: blur(10px);
+}
+
+.dark-mode .category-title {
+    background: linear-gradient(45deg, rgba(30, 144, 255, 0.3), rgba(138, 43, 226, 0.3));
+}
+
+.dark-mode .nn-visualization {
+    background: rgba(30, 30, 46, 0.6);
+}
+
+.dark-mode footer {
+    background: #0f0f23;
+}
+
+.dark-mode .copyright {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode nav {
+            background: rgba(44, 62, 80, 0.95);
+            color: white;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .dark-mode .nav-links a {
+            color: #ecf0f1;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-bar {
+            padding: 0.5rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            transition: all 0.3s ease;
+            width: 200px;
+            font-size: 14px;
+        }
+
+        .search-bar:focus {
+            border-color: #667eea;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .search-bar::placeholder {
+            color: #999;
+        }
+
+        .dark-mode .search-bar {
+            background: #34495e;
+            border-color: #7f8c8d;
+            color: white;
+        }
+
+        .theme-toggle {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 100px;
+            padding: 2rem 0;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+            margin-top: -200px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Utilities Grid */
+        .utilities-section {
+            padding: 4rem 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 2rem 2rem;
+            border-radius: 20px;
+        }
+
+        .dark-mode .utilities-section {
+            background: rgba(52, 73, 94, 0.3);
+        }
+
+        .category-container {
+            margin-bottom: 3rem;
+        }
+
+        .category-title {
+            color: white;
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .utilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            padding: 0 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .featured-utilities {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .utility-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            height: fit-content;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+       .dark-mode .utility-card {
+            background: rgba(52, 73, 94, 0.9);
+            color: white;
+            border: 1px solid rgba(116, 185, 255, 0.3);
+        }
+
+        .utility-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .utility-card:hover::before {
+            left: 100%;
+        }
+
+        .utility-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .utility-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            color: white;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .utility-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .utility-card:hover .utility-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .utility-card:hover .utility-icon::before {
+            left: 100%;
+        }
+
+        .utility-card h3 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .dark-mode .utility-card h3 {
+            color: #ecf0f1;
+        }
+
+        .utility-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+       .dark-mode .utility-card p {
+            color: #bdc3c7;
+        }
+
+        .launch-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .launch-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease;
+        }
+
+        /* Neural Network SVG */
+        .nn-visualization {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .utilities-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .search-bar {
+                width: 150px;
+            }
+
+            .utility-icon {
+                font-size: 2.5rem;
+                width: 60px;
+                height: 60px;
+                line-height: 60px;
+            }
+        }
+
+  
+  footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            color: white;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column ul li a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .footer-column ul li a i {
+            width: 20px;
+            margin-right: 0.5rem;
+        }
+
+        .footer-column p {
+            color: #adb5bd;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #495057;
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+            .affirmation-card {
+            margin-top: 90px;
+            margin-left: 50px;
+            margin-right: 50px;
+            /* background: linear-gradient(135deg, rgba(102, 126, 234, 0), rgba(118, 75, 162, 0));
+            border: 2px solid rgba(102, 126, 234, 0.2); */
+            border-radius: 16px;
+            padding: 32px;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        .affirmation-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            /* color: #1e293b; */
+            color: #ffffff;
+            text-shadow: #0f0f23;
+            font-style: italic;
+            line-height: 1.6;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .affirmation-text.updating {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @media (max-width: 768px) {
+            .affirmation-container { padding: 32px 24px; margin: 16px; }
+            .affirmation-text { font-size: 1.25rem; }
+            .affirmation-card { padding: 24px; min-height: 150px; }
+        }
+    </style>
+</head>
+<body>
+ <div class="animated-bg">
+        <div class="particles">
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+        </div>
+    </div>
+
+    <div class="floating-shapes">
+        <div class="shape"></div> <div class="shape"></div> <div class="shape"></div>
+    </div>
+<div class="main-cursor" id="mainCursor"></div>
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">Lumina</div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="pages/utilities.html">Utilities</a>
+                    <a href="pages/blog.html">Blogs</a>
+                    <a href="pages/about_us.html">About Us</a>
+                    <a href="pages/contactus.html">Contact</a>
+                </div>
+                <div class="search-container">
+                    <input type="text" class="search-bar" placeholder="Search utilities...">
+                    <button class="theme-toggle" onclick="toggleTheme()">🌙/☀️</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+        <div class="affirmation-card">
+            <p class="affirmation-text" id="affirmation-text">
+                I am confident in my unique abilities.
+            </p>
+        </div>
+    <main>
+        <section class="hero" id="home">
+            <div class="container">
+                <h1>Student Utilities Hub</h1>
+                <p>Your all-in-one platform for academic success and productivity</p>
+                <button class="cta-button" onclick="scrollToUtilities()">Explore Tools</button>
+            </div>
+        </section>
+
+        <section class="utilities-section" id="utilities">
+            <div class="container">
+                <!-- <h2 style="text-align: center; color: white; margin-bottom: 3rem; font-size: 2.5rem;">Student Utilities Hub</h2> -->
+                
+                <!-- Featured Tools -->
+                <div class="category-container">
+                    <div class="category-title">🌟 Featured Tools</div>
+                    <div class="featured-utilities">
+                        <div class="utility-card">
+                            <div>
+                                <div class="utility-icon">📅</div>
+                                <h3>Event Planner</h3>
+                                <p>Organize your academic events, deadlines, and social activities with our intuitive planning tool.</p>
+                            </div>
+                            <a href="pages/eventplanner.html"><button class="launch-btn">Explore</button></a>
+                        </div>
+
+                        <div class="utility-card">
+                            <div>
+                                <div class="utility-icon">💰</div>
+                                <h3>Expense Tracker</h3>
+                                <p>Track your student budget, monitor expenses, and manage your finances effectively.</p>
+                            </div>
+                            <a href="pages/expensetracker.html"><button class="launch-btn">Explore</button></a>
+                        </div>
+
+                        <div class="utility-card">
+                            <div>
+                                <div class="utility-icon">✅</div>
+                                <h3>Todo List Manager</h3>
+                                <p>Stay organized with a powerful task management system designed specifically for students.</p>
+                            </div>
+                            <a href="pages/todo.html"><button class="launch-btn">Explore</button></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Tools -->
+                <div class="category-container">
+                    <div class="category-title">📚 Academic Tools</div>
+                    <div class="utilities-grid">
+                        <div class="utility-card">
+                            <div>
+                                <div class="utility-icon">📖</div>
+                                <h3>Resource Hub</h3>
+                              <p>Access resources and learning materials of your college.</p>
+                            </div>
+                             <a href="pages/table.html"> <button class="launch-btn">Explore</button></a>
+                        </div>
+                    
+                       <div class="utility-card">
+                            <div>
+                                <div class="utility-icon">📚</div>
+                                <h3>Save Links</h3>
+                              <p>Save important study links that you visit often.</p>
+                            </div>
+                             <a href="pages/resourcelink.html"> <button class="launch-btn">Explore</button></a>
+                      </div>
+                   <div class="utility-card">
+                            <div>
+                                <div class="utility-icon">💡</div>
+                                <h3>SGPA Calculator</h3>
+                              <p>Helps you to calculate your academic SGPA.</p>
+                            </div>
+                             <a href="pages/gpacalculator.html"> <button class="launch-btn">Explore</button></a>
+                      </div>
+                  </div> 
+                <!-- Productivity & Development -->
+                <div class="category-container">
+                    <div class="category-title" style="margin-top:30px">⚡ Productivity & Development</div>
+                    <div class="utilities-grid">
+                        <div class="utility-card">
+                            <div>
+                                <div class="utility-icon">🛠️</div>
+                                <h3>Dev Tools Guide</h3>
+                                <p>Installation guides for development tools and programming environments.</p>
+                            </div>
+                           <a href="pages/installation.html"> <button class="launch-btn">Explore</button></a>
+                        </div>
+                        <div class="utility-card">
+                            <div>
+                                <div class="utility-icon">💪</div>
+                                <h3>AlexNet Architecture Visualization</h3>
+                                <p>Daily affirmations and motivational quotes to boost productivity.</p>
+                            </div>
+                            <a href="alexx/AlexNet.html"><button class="launch-btn">Explore</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+<footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Student Utilities</h3>
+                <p>Your comprehensive academic companion designed to help students succeed in their educational journey.</p>
+                <div style="margin-top: 1.5rem;">
+                    <a href="#" style="color:white; font-weight: 600; text-decoration: none;">Explore More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Features</h3>
+                <ul>
+                    <li><a href="pages/eventplanner.html"><i class="fas fa-chevron-right"></i> Event Planner</a></li>
+                    <li><a href="pages/expensetracker.html"><i class="fas fa-chevron-right"></i> Expense Tracker</a></li>
+                    <li><a href="pages/todo.html"><i class="fas fa-chevron-right"></i> To-Do List</a></li>
+                    <!-- <li><a href="pptgenerator.html"><i class="fas fa-chevron-right"></i> PPT Generator</a></li> -->
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="pages/installation.html"><i class="fas fa-chevron-right"></i>Popular Dev Tools</a></li>
+                    <li><a href="pages/table.html"><i class="fas fa-chevron-right"></i> Academic Papers</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Connect</h3>
+                <ul>
+                    <li><a href="https://github.com/sproutcake23/my-college-resources"><i class="fab fa-linkedin-in"></i>Github</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2025 Lumina. All rights reserved. | <a href="pages/privacy.html" style="color: var(--primary); text-decoration: none;">Privacy Policy</a> | <a href="terms.html" style="color: var(--primary); text-decoration: none;">Terms of Service</a>
+        </div>
+    </footer>
+
+
+    <script>
+const mainCursor = document.getElementById('mainCursor');
+        let circles = [];
+
+        // Track mouse movement
+        document.addEventListener('mousemove', (e) => {
+            // Update main cursor position
+            mainCursor.style.left = e.clientX + 'px';
+            mainCursor.style.top = e.clientY + 'px';
+
+            // Create trailing circle
+            createCircle(e.clientX, e.clientY);
+        });
+
+        function createCircle(x, y) {
+            const circle = document.createElement('div');
+            circle.className = 'circle';
+            
+            // Random size between 10-30px
+            const size = Math.random() * 10 + 5;
+            circle.style.width = size + 'px';
+            circle.style.height = size + 'px';
+            
+            // Position the circle
+            circle.style.left = x + 'px';
+            circle.style.top = y + 'px';
+            
+            // Random color tint
+            const hue = Math.random() * 360;
+            circle.style.background = `radial-gradient(circle, hsla(${hue}, 70%, 80%, 0.8) 0%, hsla(${hue}, 70%, 80%, 0.3) 70%, transparent 100%)`;
+            
+            document.body.appendChild(circle);
+            circles.push(circle);
+
+            // Remove circle after animation completes
+            setTimeout(() => {
+                if (circle.parentNode) {
+                    circle.parentNode.removeChild(circle);
+                }
+                circles = circles.filter(c => c !== circle);
+            }, 1000);
+        }
+
+        // Clean up circles periodically to prevent memory issues
+        setInterval(() => {
+            circles.forEach(circle => {
+                if (!circle.parentNode) {
+                    circles = circles.filter(c => c !== circle);
+                }
+            });
+        }, 5000);
+
+        // Hide cursor when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            mainCursor.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            mainCursor.style.opacity = '1';
+        });
+        // Theme Toggle
+      // Theme Toggle Functionality
+const themeToggle = document.querySelector('.theme-toggle');
+let isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+// Apply saved theme on load
+if (isDarkMode) {
+    document.body.classList.add('dark-mode');
+    themeToggle.textContent = '☀️ Light Mode';
+}
+
+function toggleTheme() {
+    isDarkMode = !isDarkMode;
+    document.body.classList.toggle('dark-mode', isDarkMode);
+    localStorage.setItem('darkMode', isDarkMode);
+    
+    // Update button text
+    themeToggle.textContent = isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
+    
+    // Update navbar background
+    updateNavbarBackground();
+}
+
+// Update navbar background based on scroll
+function updateNavbarBackground() {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 100) {
+        nav.style.background = isDarkMode 
+            ? 'rgba(15, 15, 35, 0.98)' 
+            : 'rgba(255, 255, 255, 0.98)';
+    } else {
+        nav.style.background = isDarkMode 
+            ? 'rgba(15, 15, 35, 0.95)' 
+            : 'rgba(255, 255, 255, 0.95)';
+    }
+}
+
+// Update the scroll event listener
+window.addEventListener('scroll', updateNavbarBackground);
+
+        // Smooth scroll to utilities
+        function scrollToUtilities() {
+            document.getElementById('utilities').scrollIntoView({ behavior: 'smooth' });
+        }
+
+       
+
+        // Search functionality
+        document.querySelector('.search-bar').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.utility-card');
+            
+            // Search utility cards
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                
+                if (searchTerm === '' || title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    card.style.opacity = '1';
+                    card.style.transform = 'scale(1)';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Show/hide sections based on results
+            const visibleUtilities = Array.from(cards).filter(card => card.style.display !== 'none').length;
+            const utilitiesSection = document.getElementById('utilities');
+            
+            if (searchTerm !== '') {
+                if (visibleUtilities === 0) {
+                    utilitiesSection.style.display = 'none';
+                } else {
+                    utilitiesSection.style.display = 'block';
+                }
+            } else {
+                utilitiesSection.style.display = 'block';
+            }
+        });
+
+        // Add fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe utility cards
+        document.querySelectorAll('.utility-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = document.body.classList.contains('dark-mode') 
+                    ? 'rgba(44, 62, 80, 0.98)' 
+                    : 'rgba(255, 255, 255, 0.98)';
+            } else {
+                nav.style.background = document.body.classList.contains('dark-mode') 
+                    ? 'rgba(44, 62, 80, 0.95)' 
+                    : 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+
+        // Add click effects to cards
+        document.querySelectorAll('.utility-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const affirmationText = document.getElementById('affirmation-text');
+            const affirmations = [
+                "I am capable of achieving anything I set my mind to.",
+                "My potential is limitless, and I am growing every day.",
+                "I am surrounded by opportunities and ready to seize them.",
+                "Every challenge is an opportunity for me to learn and grow.",
+                "I trust in my abilities and make progress with each step.",
+                "I am resilient, and I can overcome any obstacle.",
+                "Today is a new day to achieve my goals.",
+                "I am focused, determined, and committed to my success.",
+                "I embrace learning and new knowledge with an open mind.",
+                "I am worthy of success and happiness.",
+                "My hard work will pay off.",
+                "I am making a positive impact with my studies.",
+                "I am confident in my unique abilities.",
+                "I am a master of my studies and my future.",
+                "I welcome new experiences and knowledge.",
+                "I am grateful for the opportunity to learn and grow.",
+                "I choose to see challenges as stepping stones to success.",
+                "I am constantly evolving and becoming better.",
+                "My mind is clear, focused, and ready to learn.",
+                "I attract positive opportunities into my life.",
+                "I am the author of my own success story.",
+                "Each day brings me closer to my dreams.",
+                "I have the power to create positive change in my life.",
+                "I am brave enough to pursue my biggest goals."
+            ];
+            let currentAffirmationIndex = -1;
+            function getRandomAffirmation() {
+                if (affirmations.length === 0) return "No affirmations available.";
+                if (affirmations.length === 1) return affirmations[0];
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * affirmations.length);
+                } while (randomIndex === currentAffirmationIndex);
+                currentAffirmationIndex = randomIndex;
+                return affirmations[randomIndex];
+            }
+            function displayAffirmation() {
+                if (!affirmationText) return;
+                affirmationText.classList.add('updating');
+                setTimeout(() => {
+                    affirmationText.textContent = getRandomAffirmation();
+                    affirmationText.classList.remove('updating');
+                }, 250);
+            }
+            setInterval(displayAffirmation, 3000);
+        });
+    </script>
+
+</body>
+</html> 

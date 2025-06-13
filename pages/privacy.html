@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - StudentUtil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            min-height: 100vh;
+        }
+  .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2; /* Ensure this is behind other background elements like floating-shapes */
+            /* MODIFIED: Expanded gradient for better animation, added background-size and animation */
+            background: linear-gradient(135deg, 
+                #667eea 0%, 
+                #764ba2 25%, 
+                #f093fb 50%, 
+                #764ba2 75%, 
+                #667eea 100%);
+            background-size: 400% 400%;
+            animation: gradientShiftBg 15s ease infinite;
+            overflow: hidden;
+        }
+
+        /* NEW Keyframes for the .animated-bg gradient shift */
+        @keyframes gradientShiftBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float-up linear infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; width: 20px; height: 20px; animation-duration: 8s; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; width: 15px; height: 15px; animation-duration: 12s; animation-delay: 1s; }
+        .particle:nth-child(3) { left: 25%; width: 10px; height: 10px; animation-duration: 6s; animation-delay: 2s; }
+        .particle:nth-child(4) { left: 40%; width: 25px; height: 25px; animation-duration: 10s; animation-delay: 0.5s; }
+        .particle:nth-child(5) { left: 70%; width: 12px; height: 12px; animation-duration: 7s; animation-delay: 3s; }
+        .particle:nth-child(6) { left: 80%; width: 18px; height: 18px; animation-duration: 9s; animation-delay: 1.5s; }
+        .particle:nth-child(7) { left: 32%; width: 8px; height: 8px; animation-duration: 11s; animation-delay: 4s; }
+        .particle:nth-child(8) { left: 55%; width: 22px; height: 22px; animation-duration: 8.5s; animation-delay: 2.5s; }
+        .particle:nth-child(9) { left: 15%; width: 14px; height: 14px; animation-duration: 13s; animation-delay: 0.8s; }
+        .particle:nth-child(10) { left: 85%; width: 16px; height: 16px; animation-duration: 7.5s; animation-delay: 3.5s; }
+        .particle:nth-child(11) { left: 65%; width: 11px; height: 11px; animation-duration: 9.5s; animation-delay: 1.2s; }
+        .particle:nth-child(12) { left: 90%; width: 19px; height: 19px; animation-duration: 6.5s; animation-delay: 4.5s; }
+        .particle:nth-child(13) { left: 5%; width: 13px; height: 13px; animation-duration: 10.5s; animation-delay: 0.3s; }
+        .particle:nth-child(14) { left: 45%; width: 9px; height: 9px; animation-duration: 8.8s; animation-delay: 2.8s; }
+        .particle:nth-child(15) { left: 75%; width: 17px; height: 17px; animation-duration: 12.5s; animation-delay: 1.8s; }
+        .particle:nth-child(16) { left: 35%; width: 21px; height: 21px; animation-duration: 7.8s; animation-delay: 3.8s; }
+        .particle:nth-child(17) { left: 60%; width: 7px; height: 7px; animation-duration: 11.5s; animation-delay: 0.1s; }
+        .particle:nth-child(18) { left: 95%; width: 23px; height: 23px; animation-duration: 9.8s; animation-delay: 4.8s; }
+        .particle:nth-child(19) { left: 50%; width: 12px; height: 12px; animation-duration: 6.8s; animation-delay: 2.1s; }
+        .particle:nth-child(20) { left: 8%; width: 24px; height: 24px; animation-duration: 13.5s; animation-delay: 1.1s; }
+
+        @keyframes float-up {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .floating-shapes {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; /* Ensure shapes are behind particles slightly, but above main bg */
+            pointer-events: none;
+        }
+        .shape {
+            position: absolute; background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%; animation: gentle-float 15s ease-in-out infinite;
+        }
+        .shape:nth-child(1) { width: 120px; height: 120px; left: 5%; top: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 80px; height: 80px; right: 10%; top: 70%; animation-delay: -5s; }
+        .shape:nth-child(3) { width: 60px; height: 60px; left: 80%; top: 20%; animation-delay: -10s; }
+
+        @keyframes gentle-float {
+            0%, 100% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0.3; }
+            25% { transform: translateY(-20px) translateX(10px) scale(1.1); opacity: 0.5; }
+            50% { transform: translateY(-10px) translateX(-10px) scale(0.9); opacity: 0.7; }
+            75% { transform: translateY(-30px) translateX(5px) scale(1.05); opacity: 0.4; }
+        }
+          .circle {
+            position:fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.3) 70%, transparent 100%);
+            transform: translate(-50%, -50%);
+            animation: fadeOut 1s ease-out forwards;
+            z-index:4;
+        }
+
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .policy-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .last-updated {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section h2 {
+            font-size: 1.5rem;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .section h3 {
+            font-size: 1.2rem;
+            color: #764ba2;
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        .section p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .section ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .section li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .contact-info {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #667eea;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .policy-card {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+ <div class="animated-bg">
+        <div class="particles">
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+        </div>
+    </div>
+
+    <div class="floating-shapes">
+        <div class="shape"></div> <div class="shape"></div> <div class="shape"></div>
+    </div>
+<div class="main-cursor" id="mainCursor"></div>
+    <div class="container">
+        <div class="policy-card">
+            <div class="header">
+                <h1>Privacy Policy</h1>
+                <p>StudentUtil - Your Academic Companion</p>
+            </div>
+
+            <div class="last-updated">
+                Last Updated: May 30, 2025
+            </div>
+
+            <div class="section">
+                <h2>1. Introduction</h2>
+                <p>Welcome to StudentUtil. We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.</p>
+                <p>By using StudentUtil, you agree to the collection and use of information in accordance with this policy. If you do not agree with our policies and practices, please do not use our services.</p>
+            </div>
+
+            <div class="section">
+                <h2>2. Information We Collect</h2>
+                
+                <h3>Personal Information</h3>
+                <p>We may collect the following types of personal information:</p>
+                <ul>
+                    <li>Name and contact information (email address, phone number)</li>
+                    <li>Educational information (school, grade level, subjects of interest)</li>
+                    <li>Account credentials (username, encrypted password)</li>
+                    <li>Profile information and preferences</li>
+                    <li>Communication records with our support team</li>
+                </ul>
+
+                <h3>Automatically Collected Information</h3>
+                <ul>
+                    <li>IP address and location data</li>
+                    <li>Browser type and version</li>
+                    <li>Device information and operating system</li>
+                    <li>Usage patterns and website interactions</li>
+                    <li>Cookies and similar tracking technologies</li>
+                </ul>
+
+                <h3>Academic Data</h3>
+                <ul>
+                    <li>Study materials and notes you upload</li>
+                    <li>Progress tracking and performance metrics</li>
+                    <li>Quiz and assessment results</li>
+                    <li>Learning preferences and study habits</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>3. How We Use Your Information</h2>
+                <p>We use the collected information for the following purposes:</p>
+                <ul>
+                    <li>Providing and maintaining our educational services</li>
+                    <li>Personalizing your learning experience</li>
+                    <li>Communicating with you about your account and our services</li>
+                    <li>Improving our website functionality and user experience</li>
+                    <li>Sending educational content and updates (with your consent)</li>
+                    <li>Analyzing usage patterns to enhance our services</li>
+                    <li>Ensuring security and preventing fraud</li>
+                    <li>Complying with legal obligations</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>4. Information Sharing and Disclosure</h2>
+                <p>We do not sell, trade, or rent your personal information to third parties. We may share your information in the following circumstances:</p>
+                
+                <h3>Service Providers</h3>
+                <p>We may share information with trusted third-party service providers who assist us in operating our website, conducting business, or providing services to you, provided they agree to keep this information confidential.</p>
+
+                <h3>Legal Compliance</h3>
+                <p>We may disclose your information when required by law, regulation, or legal process, or to protect our rights, property, or safety, or that of our users or others.</p>
+
+                <h3>Business Transfers</h3>
+                <p>In the event of a merger, acquisition, or sale of assets, your information may be transferred as part of the transaction.</p>
+            </div>
+
+            <div class="section">
+                <h2>5. Data Security</h2>
+                <p>We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These measures include:</p>
+                <ul>
+                    <li>Encryption of sensitive data in transit and at rest</li>
+                    <li>Regular security assessments and updates</li>
+                    <li>Access controls and authentication mechanisms</li>
+                    <li>Secure server infrastructure and monitoring</li>
+                    <li>Employee training on data protection practices</li>
+                </ul>
+                <p>However, no method of transmission over the internet or electronic storage is 100% secure, and we cannot guarantee absolute security.</p>
+            </div>
+
+            <div class="section">
+                <h2>6. Cookies and Tracking Technologies</h2>
+                <p>We use cookies and similar tracking technologies to enhance your browsing experience, analyze site traffic, and understand user preferences. You can control cookie settings through your browser preferences, though disabling cookies may affect website functionality.</p>
+                
+                <h3>Types of Cookies We Use:</h3>
+                <ul>
+                    <li><strong>Essential Cookies:</strong> Required for basic website functionality</li>
+                    <li><strong>Performance Cookies:</strong> Help us analyze website usage and performance</li>
+                    <li><strong>Functionality Cookies:</strong> Remember your preferences and settings</li>
+                    <li><strong>Marketing Cookies:</strong> Used to deliver relevant advertisements (with consent)</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>7. Your Rights and Choices</h2>
+                <p>You have the following rights regarding your personal information:</p>
+                <ul>
+                    <li><strong>Access:</strong> Request a copy of the personal information we hold about you</li>
+                    <li><strong>Correction:</strong> Request correction of inaccurate or incomplete information</li>
+                    <li><strong>Deletion:</strong> Request deletion of your personal information (subject to legal requirements)</li>
+                    <li><strong>Portability:</strong> Request transfer of your data to another service provider</li>
+                    <li><strong>Opt-out:</strong> Unsubscribe from marketing communications</li>
+                    <li><strong>Restrict Processing:</strong> Request limitation of how we process your information</li>
+                </ul>
+
+                <div class="highlight">
+                    <strong>Important:</strong> To exercise any of these rights, please contact us using the information provided in the Contact section below.
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>8. Children's Privacy</h2>
+                <p>StudentUtil is designed to serve students of various ages. For users under 13 years of age, we comply with the Children's Online Privacy Protection Act (COPPA). We do not knowingly collect personal information from children under 13 without parental consent.</p>
+                <p>If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately. We will take steps to remove such information from our records.</p>
+            </div>
+
+            <div class="section">
+                <h2>9. International Data Transfers</h2>
+                <p>Your information may be transferred to and processed in countries other than your country of residence. These countries may have different data protection laws. We ensure appropriate safeguards are in place to protect your information in accordance with this Privacy Policy.</p>
+            </div>
+
+            <div class="section">
+                <h2>10. Data Retention</h2>
+                <p>We retain your personal information for as long as necessary to provide our services and fulfill the purposes outlined in this Privacy Policy. We may also retain information to comply with legal obligations, resolve disputes, and enforce our agreements.</p>
+                <p>When we no longer need your information, we will securely delete or anonymize it.</p>
+            </div>
+
+            <div class="section">
+                <h2>11. Changes to This Privacy Policy</h2>
+                <p>We may update this Privacy Policy from time to time to reflect changes in our practices or legal requirements. We will notify you of any material changes by posting the updated policy on our website and updating the "Last Updated" date.</p>
+                <p>We encourage you to review this Privacy Policy periodically to stay informed about how we protect your information.</p>
+            </div>
+
+            <div class="section">
+                <h2>12. Contact Information</h2>
+                <div class="contact-info">
+                    <p>If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:</p>
+                    <ul>
+                        <li><strong>Email:</strong> privacy@studentutil.com</li>
+                        <li><strong>Website:</strong> www.studentutil.com/contact</li>
+                        <li><strong>Mailing Address:</strong> StudentUtil Privacy Team, dummymail@xyz.com</li>
+                    </ul>
+                    <p>We will respond to your inquiries within 30 days of receipt.</p>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>&copy; 2025 StudentUtil. All rights reserved.</p>
+                <p>Committed to protecting your privacy and empowering your education.</p>
+            </div>
+        </div>
+    </div>
+   <script>
+const mainCursor = document.getElementById('mainCursor');
+        let circles = [];
+
+        // Track mouse movement
+        document.addEventListener('mousemove', (e) => {
+            // Update main cursor position
+            mainCursor.style.left = e.clientX + 'px';
+            mainCursor.style.top = e.clientY + 'px';
+
+            // Create trailing circle
+            createCircle(e.clientX, e.clientY);
+        });
+
+        function createCircle(x, y) {
+            const circle = document.createElement('div');
+            circle.className = 'circle';
+            
+            // Random size between 10-30px
+            const size = Math.random() * 10 + 5;
+            circle.style.width = size + 'px';
+            circle.style.height = size + 'px';
+            
+            // Position the circle
+            circle.style.left = x + 'px';
+            circle.style.top = y + 'px';
+            
+            // Random color tint
+            const hue = Math.random() * 360;
+            circle.style.background = `radial-gradient(circle, hsla(${hue}, 70%, 80%, 0.8) 0%, hsla(${hue}, 70%, 80%, 0.3) 70%, transparent 100%)`;
+            
+            document.body.appendChild(circle);
+            circles.push(circle);
+
+            // Remove circle after animation completes
+            setTimeout(() => {
+                if (circle.parentNode) {
+                    circle.parentNode.removeChild(circle);
+                }
+                circles = circles.filter(c => c !== circle);
+            }, 1000);
+        }
+
+        // Clean up circles periodically to prevent memory issues
+        setInterval(() => {
+            circles.forEach(circle => {
+                if (!circle.parentNode) {
+                    circles = circles.filter(c => c !== circle);
+                }
+            });
+        }, 5000);
+
+        // Hide cursor when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            mainCursor.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            mainCursor.style.opacity = '1';
+        });
+</script>
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119008715-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-119008715-1');
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <style type="text/css">
+        * { font-weight: 100; }
+        h1 { font-weight: 100; }
+        #graph-container {
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            position: fixed;
+        }
+
+        .nn-picker {
+            width: 460px; /* INCREASED WIDTH to accommodate more color pickers */
+            margin: 30px;
+            z-index: 1000;
+        }
+        .github-corner {
+            z-index: 1000;
+        }
+
+        [data-toggle="collapse"] .fa:before {
+            font-size: 2rem;
+            color: black;
+            content: "\f106";
+            position: relative;
+            top: 5px;
+        }
+        .fa {
+          transition: 0.3s transform ease-in-out;
+        }
+        .collapsed .fa {
+          transform: rotate(-180deg);
+        }
+        .tab-content {
+            padding: 20px;
+        }
+        input[type="range"] {
+            margin-left: 10px;
+        }
+        #count {
+            position: fixed;
+            bottom: 0;
+            right: 1rem;
+            opacity: 0.4;
+            font-weight: 100;
+        }
+        a.disabled {
+            color: gray;
+            pointer-events: none;
+        }
+        input[type="color"].form-control {
+            height: calc(1.5em + .75rem + 2px);
+            padding: .1rem .2rem;
+            width: 45px; /* Slightly smaller if needed */
+            flex: 0 0 45px; /* Prevent flex item from growing/shrinking too much */
+            margin-left: 2px; /* Add some spacing between inputs */
+        }
+        .input-group .form-control { /* Adjust flex for number inputs if they get too squeezed */
+            min-width: 35px; /* Ensure number inputs don't get too small */
+            flex-grow: 1; /* Allow them to grow if there's space */
+        }
+        /* Reduce padding on number inputs to make more space */
+        .input-group input[type="number"].form-control {
+            padding-left: .3rem;
+            padding-right: .3rem;
+        }
+    </style>
+
+    <title>NN SVG</title>
+
+</head>
+<body>
+
+    <div id="graph-container"></div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="nn-picker">
+                <div class="card">
+                    <div class="card-header">
+                        <a class="pull-right" data-toggle="collapse" href="#collapsable" role="button"><i class="fa"></i></a>
+                        <h1>NN-SVG</h1>
+                        <p>Publication-ready NN-architecture schematics. <a id="download" class="disabled" href="#">Download SVG</a></p>
+                        <nav>
+                            <div class="nav nav-tabs card-header-tabs" role="tablist">
+                                <!-- <a class="nav-item nav-link" href="index.html">FCNN style</a> -->
+                                <!-- <a class="nav-item nav-link" href="LeNet.html">LeNet style</a> -->
+                                <a class="nav-item nav-link active">AlexNet style</a>
+                            </div>
+                        </nav>
+                    </div>
+
+                    <div class="tab-content collapse show" id="collapsable">
+                        <div class="tab-pane fade show active" id="AlexNet" role="tabpanel">
+                            <!-- Style section (Renderer, Opacity, Spacing, Scaling, Dims, Font) -->
+                            <h4>Style:</h4>
+                            <div id="rendererType">
+                                <label for="rendererType" style="margin-right:10px;">Renderer</label>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="rendererType" id="webGL" value="webgl" checked> webGL
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="rendererType" id="SVG" value="svg"> SVG
+                                    </label>
+                                </div>
+                                <small class="form-text text-muted">The SVG renderer is required to download SVG, however the WebGL renderer is required to show tensor dimensions.</small>
+                            </div>
+                            <br>
+                            <div>
+                                <label for="rectOpacity">Tensor Opacity</label>
+                                <input type="range" id="rectOpacity" name="rectOpacity" min="0" max="1" step="0.01" value="0.4" style="position: relative; top: 3px;">
+                            </div>
+                            <div>
+                                <label for="filterOpacity">Filter Opacity</label>
+                                <input type="range" id="filterOpacity" name="filterOpacity" min="0" max="1" step="0.01" value="0.4" style="position: relative; top: 3px;">
+                            </div>
+                            <div>
+                                <label for="betweenLayers">Spacing Between Layers</label>
+                                <input type="range" id="betweenLayers" name="betweenLayers" min="10" max="100" step="1" value="20" style="position: relative; top: 3px;">
+                            </div>
+                            <hr>
+                            <div>
+                                <input type="checkbox" id="logDepth" name="logDepth" value="logDepth" checked>
+                                <label for="logDepth">Log Feature-Map Depth Scaling</label>
+                            </div>
+                            <div>
+                                <label for="depthScale">Depth Size Scaling</label>
+                                <input type="range" id="depthScale" name="depthScale" min="1" max="100" step="1" value="10" style="position: relative; top: 3px;">
+                                <span id="depthSpan">10</span>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="logWidth" name="logWidth" value="logWidth" checked>
+                                <label for="logWidth">Log Feature-Map Width Scaling</label>
+                            </div>
+                            <div>
+                                <label for="widthScale">Width Size Scaling</label>
+                                <input type="range" id="widthScale" name="widthScale" min="1" max="100" step="1" value="10" style="position: relative; top: 3px;">
+                                <span id="widthSpan">10</span>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="logConvSize" name="logConvSize" value="logConvSize">
+                                <label for="logConvSize">Log Convolutional Filter Size Scaling</label>
+                            </div>
+                            <div>
+                                <label for="convScale">Convolutional Filter Scaling</label>
+                                <input type="range" id="convScale" name="convScale" min="1" max="10" step="1" value="1" style="position: relative; top: 3px;">
+                                <span id="convSpan">1</span>
+                            </div>
+                            <hr>
+                            <div>
+                                <input type="checkbox" id="showDims" name="showDims" value="showDims">
+                                <label for="showDims">Show Tensor Dimensions</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="showConvDims" name="showConvDims" value="showConvDims">
+                                <label for="showConvDims">Show Conv Dimensions</label>
+                            </div>
+                            <div>
+                                <label for="fontScale">Font Size</label>
+                                <input type="range" id="fontScale" name="fontScale" min="1" max="3" step="0.2" value="1" style="position: relative; top: 3px;">
+                            </div>
+                            <hr>
+
+                            <h4>Architecture:</h4>
+                            <div id="architecture">
+                                <p style="font-size: 0.7em;">H|W|D|fH|fW|BoxC|FiltC|PyrC</p>
+                                <div class="row entry">
+                                    <div class="input-group mb-2 mr-sm-2 col-12">
+                                        <button class="btn btn-secondary btn-remove input-group-prepend"><span class="fa fa-minus"></span></button>
+                                        <input type="number" class="form-control" name="height" step="1" value="224" title="Height"/>
+                                        <input type="number" class="form-control" name="width" step="1" value="224" title="Width"/>
+                                        <input type="number" class="form-control" name="depth" step="1" value="3" title="Depth"/>
+                                        <input type="number" class="form-control" name="filterHeight" step="1" value="11" title="Filter H"/>
+                                        <input type="number" class="form-control" name="filterWidth" step="1" value="11" title="Filter W"/>
+                                        <input type="color" class="form-control" name="layerColor" value="#ffcccc" title="Tensor Box Color"/>
+                                        <input type="color" class="form-control" name="convColor" value="#ff9999" title="Filter Body Color"/>
+                                        <input type="color" class="form-control" name="pyramidColor" value="#ccffcc" title="Pyramid Color"/>
+                                    </div>
+                                </div>
+                                <div class="row entry">
+                                    <div class="input-group mb-2 mr-sm-2 col-12">
+                                        <button class="btn btn-secondary btn-remove input-group-prepend"><span class="fa fa-minus"></span></button>
+                                        <input type="number" class="form-control" name="height" step="1" value="55" title="Height"/>
+                                        <input type="number" class="form-control" name="width" step="1" value="55" title="Width"/>
+                                        <input type="number" class="form-control" name="depth" step="1" value="96" title="Depth"/>
+                                        <input type="number" class="form-control" name="filterHeight" step="1" value="5" title="Filter H"/>
+                                        <input type="number" class="form-control" name="filterWidth" step="1" value="5" title="Filter W"/>
+                                        <input type="color" class="form-control" name="layerColor" value="#ccccff" title="Tensor Box Color"/>
+                                        <input type="color" class="form-control" name="convColor" value="#9999ff" title="Filter Body Color"/>
+                                        <input type="color" class="form-control" name="pyramidColor" value="#ffffcc" title="Pyramid Color"/>
+                                    </div>
+                                </div>
+                                 <div class="row entry">
+                                    <div class="input-group mb-2 mr-sm-2 col-12">
+                                        <button class="btn btn-secondary btn-remove input-group-prepend"><span class="fa fa-minus"></span></button>
+                                        <input type="number" class="form-control" name="height" step="1" value="27" />
+                                        <input type="number" class="form-control" name="width" step="1" value="27" />
+                                        <input type="number" class="form-control" name="depth" step="1" value="256" />
+                                        <input type="number" class="form-control" name="filterHeight" step="1" value="3" />
+                                        <input type="number" class="form-control" name="filterWidth" step="1" value="3" />
+                                        <input type="color" class="form-control" name="layerColor" value="#ffbbbb" title="Tensor Box Color"/>
+                                        <input type="color" class="form-control" name="convColor" value="#ff8888" title="Filter Body Color"/>
+                                        <input type="color" class="form-control" name="pyramidColor" value="#bbffbb" title="Pyramid Color"/>
+                                    </div>
+                                </div>
+                                <div class="row entry">
+                                    <div class="input-group mb-2 mr-sm-2 col-12">
+                                        <button class="btn btn-secondary btn-remove input-group-prepend"><span class="fa fa-minus"></span></button>
+                                        <input type="number" class="form-control" name="height" step="1" value="13" />
+                                        <input type="number" class="form-control" name="width" step="1" value="13" />
+                                        <input type="number" class="form-control" name="depth" step="1" value="384" />
+                                        <input type="number" class="form-control" name="filterHeight" step="1" value="3" />
+                                        <input type="number" class="form-control" name="filterWidth" step="1" value="3" />
+                                        <input type="color" class="form-control" name="layerColor" value="#bbffbb" title="Tensor Box Color"/>
+                                        <input type="color" class="form-control" name="convColor" value="#88ff88" title="Filter Body Color"/>
+                                        <input type="color" class="form-control" name="pyramidColor" value="#bbbbff" title="Pyramid Color"/>
+                                    </div>
+                                </div>
+                                <div class="row entry">
+                                    <div class="input-group mb-2 mr-sm-2 col-12">
+                                        <button class="btn btn-secondary btn-remove input-group-prepend"><span class="fa fa-minus"></span></button>
+                                        <input type="number" class="form-control" name="height" step="1" value="13" />
+                                        <input type="number" class="form-control" name="width" step="1" value="13" />
+                                        <input type="number" class="form-control" name="depth" step="1" value="384" />
+                                        <input type="number" class="form-control" name="filterHeight" step="1" value="3" />
+                                        <input type="number" class="form-control" name="filterWidth" step="1" value="3" />
+                                        <input type="color" class="form-control" name="layerColor" value="#bbbbff" title="Tensor Box Color"/>
+                                        <input type="color" class="form-control" name="convColor" value="#8888ff" title="Filter Body Color"/>
+                                        <input type="color" class="form-control" name="pyramidColor" value="#ffffbb" title="Pyramid Color"/>
+                                    </div>
+                                </div>
+                                <div class="row entry">
+                                    <div class="input-group mb-2 mr-sm-2 col-12">
+                                        <button class="btn btn-secondary btn-remove input-group-prepend"><span class="fa fa-minus"></span></button>
+                                        <input type="number" class="form-control" name="height" step="1" value="13" />
+                                        <input type="number" class="form-control" name="width" step="1" value="13" />
+                                        <input type="number" class="form-control" name="depth" step="1" value="256" />
+                                        <input type="number" class="form-control" name="filterHeight" step="1" value="3" />
+                                        <input type="number" class="form-control" name="filterWidth" step="1" value="3" />
+                                        <input type="color" class="form-control" name="layerColor" value="#ffffbb" title="Tensor Box Color"/>
+                                        <input type="color" class="form-control" name="convColor" value="#ffff88" title="Filter Body Color"/>
+                                        <input type="color" class="form-control" name="pyramidColor" value="#ffbbff" title="Pyramid Color"/>
+                                    </div>
+                                </div>
+                                <div class="row entry"> <!-- Template Row -->
+                                    <div class="input-group mb-2 mr-sm-2 col-12">
+                                        <button class="btn btn-primary btn-add input-group-prepend"><span class="fa fa-plus"></span></button>
+                                        <input type="number" class="form-control" name="height" step="1" title="Height"/>
+                                        <input type="number" class="form-control" name="width" step="1" title="Width"/>
+                                        <input type="number" class="form-control" name="depth" step="1" title="Depth"/>
+                                        <input type="number" class="form-control" name="filterHeight" step="1" title="Filter H"/>
+                                        <input type="number" class="form-control" name="filterWidth" step="1" title="Filter W"/>
+                                        <input type="color" class="form-control" name="layerColor" value="#eeeeee" title="Tensor Box Color"/>
+                                        <input type="color" class="form-control" name="convColor" value="#dddddd" title="Filter Body Color"/>
+                                        <input type="color" class="form-control" name="pyramidColor" value="#cccccc" title="Pyramid Color"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div id="architecture2">
+                                <p style="font-size: 0.8em;">Vector Length | Color</p>
+                                <div class="row entry">
+                                    <div class="input-group mb-2 mr-sm-2 col-7">
+                                        <button class="btn btn-secondary btn-remove input-group-prepend"><span class="fa fa-minus"></span></button>
+                                        <input type="number" class="form-control" name="vectorLength" step="1" value="2048" />
+                                        <input type="color" class="form-control" name="layerColor" value="#eeaaee" title="Layer Color"/>
+                                    </div>
+                                </div>
+                                <div class="row entry">
+                                    <div class="input-group mb-2 mr-sm-2 col-7">
+                                        <button class="btn btn-secondary btn-remove input-group-prepend"><span class="fa fa-minus"></span></button>
+                                        <input type="number" class="form-control" name="vectorLength" step="1" value="2048" />
+                                        <input type="color" class="form-control" name="layerColor" value="#aaffee" title="Layer Color"/>
+                                    </div>
+                                </div>
+                                <div class="row entry">
+                                    <div class="input-group mb-2 mr-sm-2 col-7">
+                                        <button class="btn btn-secondary btn-remove input-group-prepend"><span class="fa fa-minus"></span></button>
+                                        <input type="number" class="form-control" name="vectorLength" step="1" value="1000" />
+                                        <input type="color" class="form-control" name="layerColor" value="#eeccaa" title="Layer Color"/>
+                                    </div>
+                                </div>
+                                <div class="row entry">
+                                    <div class="input-group mb-2 mr-sm-2 col-7">
+                                        <button class="btn btn-primary btn-add input-group-prepend"><span class="fa fa-plus"></span></button>
+                                        <input type="number" class="form-control" name="vectorLength" step="1"/>
+                                        <input type="color" class="form-control" name="layerColor" value="#dddddd" title="Layer Color"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="count"><a style="font-size: 1rem" href="about.html">About</a></div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.13.0/underscore-umd-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/91/three.min.js"></script>
+    <script src="OrbitControls.js"></script>
+    <script src="SVGRenderer.js"></script>
+    <script src="Projector.js"></script>
+    <script src="util.js"></script>
+    <script src="AlexNet.js"></script> <!-- This should be your AlexNet.js with the 3-color logic -->
+
+    <script type="text/javascript">
+
+    var alexnet = AlexNet();
+
+    function getUIData() {
+        let architecture = $('#architecture').find('.entry').map(function(i, el_jq) {
+            const el = $(el_jq);
+            const layerData = {
+                name: `ConvLayer_${i}`,
+                height: parseFloat(el.find('input[name="height"]').val()),
+                width: parseFloat(el.find('input[name="width"]').val()),
+                depth: parseFloat(el.find('input[name="depth"]').val()),
+                filterHeight: parseFloat(el.find('input[name="filterHeight"]').val()),
+                filterWidth: parseFloat(el.find('input[name="filterWidth"]').val()),
+                color: el.find('input[name="layerColor"]').val() || '#eeeeee',
+                convColor: el.find('input[name="convColor"]').val() || '#dddddd',     // Get conv filter color
+                pyramidColor: el.find('input[name="pyramidColor"]').val() || '#cccccc', // Get pyramid color
+                rel_x: rand(-0.4, 0.4),
+                rel_y: rand(-0.4, 0.4)
+            };
+            if (isNaN(layerData.height) || isNaN(layerData.width) || isNaN(layerData.depth) ||
+                isNaN(layerData.filterHeight) || isNaN(layerData.filterWidth) ||
+                !el.find('input[name="height"]').val() ) {
+                return null;
+            }
+            return layerData;
+        }).get().filter(layer => layer !== null);
+
+        let architecture2 = $('#architecture2').find('.entry').map(function(i, el_jq) {
+    const el = $(el_jq);
+    const vectorLengthStr = el.find('input[name="vectorLength"]').val();
+    const vectorLength = parseFloat(vectorLengthStr);
+    
+    if (!isNaN(vectorLength) && vectorLengthStr.trim() !== "") {
+        return {
+            name: `DenseLayer_${i}`,
+            depth: vectorLength,
+            color: el.find('input[name="layerColor"]').val() || '#dddddd'
+        };
+    }
+
+    return null;
+}).get().filter(layer => layer !== null);
+
+        return {
+            architecture_: architecture,
+            architecture2_: architecture2,
+            betweenLayers_: parseFloat($("#betweenLayers").val()),
+            logDepth_: $("#logDepth").is(":checked"),
+            depthScale_: parseFloat($("#depthScale").val()),
+            logWidth_: $("#logWidth").is(":checked"),
+            widthScale_: parseFloat($("#widthScale").val()),
+            logConvSize_: $("#logConvSize").is(":checked"),
+            convScale_: parseFloat($("#convScale").val()),
+            showDims_: $("#showDims").is(":checked"),
+            showConvDims_: $("#showConvDims").is(":checked")
+        };
+    }
+
+    function restart() {
+        // console.log("--- Restart called ---"); // Keep for debugging if needed
+        const uiData = getUIData();
+        // console.log("Data for redraw:", JSON.stringify(uiData, null, 2)); // Keep for debugging
+        alexnet.redraw(uiData);
+    }
+
+    $(document).ready(function() {
+        restart();
+    });
+
+    $('#rendererType input:radio').change(function() {
+        const rendererType = this.value;
+        if (rendererType == 'svg') {
+            $("#download").removeClass('disabled');
+        } else if (rendererType == 'webgl') {
+            $("#download").addClass('disabled');
+        }
+        $(this).blur();
+        alexnet.restartRenderer({'rendererType_':rendererType});
+        restart();
+    });
+
+    $("#fontScale, #rectOpacity, #filterOpacity").on('input change', function () {
+        const styleParams = {};
+        if (this.id === 'fontScale') styleParams.fontScale_ = parseFloat(this.value);
+        if (this.id === 'rectOpacity') styleParams.rectOpacity_ = parseFloat(this.value);
+        if (this.id === 'filterOpacity') styleParams.filterOpacity_ = parseFloat(this.value);
+        alexnet.style(styleParams);
+        // $(this).blur(); // Blurring on 'input' can be annoying for sliders
+        restart();
+    });
+    $("#rectOpacity, #filterOpacity, #fontScale").on('mouseup touchend', function() { $(this).blur(); }); // Blur when slider interaction ends
+
+
+    $("#betweenLayers, #depthScale, #widthScale, #convScale").on('input change', function () {
+        if (this.id === 'depthScale') $("#depthSpan").text(this.value);
+        if (this.id === 'widthScale') $("#widthSpan").text(this.value);
+        if (this.id === 'convScale') $("#convSpan").text(this.value);
+        alexnet.redraw(getUIData());
+    });
+    $("#betweenLayers, #depthScale, #widthScale, #convScale").on('mouseup touchend', function() { $(this).blur(); });
+
+
+    $("#logDepth, #logWidth, #logConvSize, #showDims, #showConvDims").change(function () {
+        alexnet.redraw(getUIData());
+    });
+
+    function setupDynamicRows(containerSelector) {
+    $(document).on('click', `${containerSelector} .btn-add`, function(e) {
+        e.preventDefault();
+            var controlForm = $(containerSelector);
+            var currentEntry = $(this).closest('.entry');
+            var newEntry = currentEntry.clone().appendTo(controlForm);
+            newEntry.find('input[type="number"]').val('');
+
+            if (containerSelector === '#architecture') {
+                 newEntry.find('input[name="layerColor"]').val('#eeeeee');
+                 newEntry.find('input[name="convColor"]').val('#dddddd');
+                 newEntry.find('input[name="pyramidColor"]').val('#cccccc');
+            } else if (containerSelector === '#architecture2') {
+                 newEntry.find('input[name="layerColor"]').val('#c0c0c0');
+            }
+
+            controlForm.find('.entry:not(:last-child) .btn-add')
+                .removeClass('btn-add').addClass('btn-remove')
+                .removeClass('btn-primary').addClass('btn-secondary')
+                .html('<span class="fa fa-minus"></span>');
+            restart();
+        });
+
+        $(document).on('click', `${containerSelector} .btn-remove`, function(e)
+        {
+            e.preventDefault();
+            if ($(containerSelector).find('.entry').length > 1) {
+                $(this).closest('.entry').remove();
+                restart();
+            }
+            return false;
+        });
+    }
+
+    setupDynamicRows('#architecture');
+    setupDynamicRows('#architecture2');
+
+    $(document).on('input change', '#architecture input, #architecture2 input', function(e) {
+        restart();
+    });
+
+    $("#download").on("click", function() {
+        if ($(this).hasClass('disabled')) return;
+        const svgContainer = $("#graph-container svg");
+        if (svgContainer.length === 0) {
+            alert("SVG not available for download. Ensure SVG renderer is active.");
+            return;
+        }
+        const svgData = $('<div>').append(svgContainer.clone().attr("xmlns", "http://www.w3.org/2000/svg")).html();
+        $(this).attr("href", 'data:application/octet-stream;base64,' + btoa(unescape(encodeURIComponent(svgData))))
+               .attr("download", "nn.svg")
+    });
+
+    </script>
+
+</body>
+</html>

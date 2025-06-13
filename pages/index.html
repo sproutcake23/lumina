@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Neural Network Visualizer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="light">
+ <div class="animated-bg">
+        <div class="particles">
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+        </div>
+    </div>
+
+    <div class="floating-shapes">
+        <div class="shape"></div> <div class="shape"></div> <div class="shape"></div>
+    </div>
+<div class="main-cursor" id="mainCursor"></div>	
+  <header>
+    <h1>Neural Network Visualizer</h1>
+    <button id="toggleTheme">Toggle Theme</button>
+  </header>
+
+  <main>
+    <form id="nnForm">
+      <label>Input Neurons:
+        <input type="number" id="inputNeurons" min="1" max="20" value="3" required />
+      </label>
+      <label>Hidden Layers (comma-separated neurons):
+        <input type="text" id="hiddenLayers" placeholder="e.g. 4,5" required />
+      </label>
+      <label>Output Neurons:
+        <input type="number" id="outputNeurons" min="1" max="10" value="2" required />
+      </label>
+      <button type="submit">Generate Network</button>
+      <button type="button" id="exportBtn">Export SVG</button>
+    </form>
+
+    <svg id="nnCanvas" width="100%" height="600"></svg>
+  </main>
+
+  <script src="script.js"></script>
+<script>
+const mainCursor = document.getElementById('mainCursor');
+        let circles = [];
+
+        // Track mouse movement
+        document.addEventListener('mousemove', (e) => {
+            // Update main cursor position
+            mainCursor.style.left = e.clientX + 'px';
+            mainCursor.style.top = e.clientY + 'px';
+
+            // Create trailing circle
+            createCircle(e.clientX, e.clientY);
+        });
+
+        function createCircle(x, y) {
+            const circle = document.createElement('div');
+            circle.className = 'circle';
+            
+            // Random size between 10-30px
+            const size = Math.random() * 10 + 5;
+            circle.style.width = size + 'px';
+            circle.style.height = size + 'px';
+            
+            // Position the circle
+            circle.style.left = x + 'px';
+            circle.style.top = y + 'px';
+            
+            // Random color tint
+            const hue = Math.random() * 360;
+            circle.style.background = `radial-gradient(circle, hsla(${hue}, 70%, 80%, 0.8) 0%, hsla(${hue}, 70%, 80%, 0.3) 70%, transparent 100%)`;
+            
+            document.body.appendChild(circle);
+            circles.push(circle);
+
+            // Remove circle after animation completes
+            setTimeout(() => {
+                if (circle.parentNode) {
+                    circle.parentNode.removeChild(circle);
+                }
+                circles = circles.filter(c => c !== circle);
+            }, 1000);
+        }
+
+        // Clean up circles periodically to prevent memory issues
+        setInterval(() => {
+            circles.forEach(circle => {
+                if (!circle.parentNode) {
+                    circles = circles.filter(c => c !== circle);
+                }
+            });
+        }, 5000);
+
+        // Hide cursor when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            mainCursor.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            mainCursor.style.opacity = '1';
+        });
+</script>
+</body>
+</html>

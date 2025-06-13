@@ -1,0 +1,2127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Utilities</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+          body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .dark-mode .animated-bg {
+    background: linear-gradient(135deg, 
+        #1a1a2e 0%, 
+        #16213e 25%, 
+        #0f3460 50%, 
+        #16213e 75%, 
+        #1a1a2e 100%);
+    animation: gradientShiftBg 20s ease infinite;
+}
+
+.dark-mode nav {
+    background: rgba(44, 62, 80, 0.95);
+    color: white;
+}
+
+.dark-mode .particle {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .shape {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.dark-mode footer {
+    background: #0f0f23;
+}
+
+.dark-mode .copyright {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+            /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode nav {
+            background: rgba(44, 62, 80, 0.95);
+            color: white;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            /* flex-direction: column; */
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+                .dark-mode .nav-links a {
+            color: #ecf0f1;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+                .theme-toggle {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        header {
+           margin-top: 10rem;
+        }
+        /* Animated Particle Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2; /* Ensure this is behind other background elements like floating-shapes */
+            /* MODIFIED: Expanded gradient for better animation, added background-size and animation */
+            background: linear-gradient(135deg, 
+                #667eea 0%, 
+                #764ba2 25%, 
+                #f093fb 50%, 
+                #764ba2 75%, 
+                #667eea 100%);
+            background-size: 400% 400%;
+            animation: gradientShiftBg 15s ease infinite;
+            overflow: hidden;
+        }
+
+        /* NEW Keyframes for the .animated-bg gradient shift */
+        @keyframes gradientShiftBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float-up linear infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; width: 20px; height: 20px; animation-duration: 8s; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; width: 15px; height: 15px; animation-duration: 12s; animation-delay: 1s; }
+        .particle:nth-child(3) { left: 25%; width: 10px; height: 10px; animation-duration: 6s; animation-delay: 2s; }
+        .particle:nth-child(4) { left: 40%; width: 25px; height: 25px; animation-duration: 10s; animation-delay: 0.5s; }
+        .particle:nth-child(5) { left: 70%; width: 12px; height: 12px; animation-duration: 7s; animation-delay: 3s; }
+        .particle:nth-child(6) { left: 80%; width: 18px; height: 18px; animation-duration: 9s; animation-delay: 1.5s; }
+        .particle:nth-child(7) { left: 32%; width: 8px; height: 8px; animation-duration: 11s; animation-delay: 4s; }
+        .particle:nth-child(8) { left: 55%; width: 22px; height: 22px; animation-duration: 8.5s; animation-delay: 2.5s; }
+        .particle:nth-child(9) { left: 15%; width: 14px; height: 14px; animation-duration: 13s; animation-delay: 0.8s; }
+        .particle:nth-child(10) { left: 85%; width: 16px; height: 16px; animation-duration: 7.5s; animation-delay: 3.5s; }
+        .particle:nth-child(11) { left: 65%; width: 11px; height: 11px; animation-duration: 9.5s; animation-delay: 1.2s; }
+        .particle:nth-child(12) { left: 90%; width: 19px; height: 19px; animation-duration: 6.5s; animation-delay: 4.5s; }
+        .particle:nth-child(13) { left: 5%; width: 13px; height: 13px; animation-duration: 10.5s; animation-delay: 0.3s; }
+        .particle:nth-child(14) { left: 45%; width: 9px; height: 9px; animation-duration: 8.8s; animation-delay: 2.8s; }
+        .particle:nth-child(15) { left: 75%; width: 17px; height: 17px; animation-duration: 12.5s; animation-delay: 1.8s; }
+        .particle:nth-child(16) { left: 35%; width: 21px; height: 21px; animation-duration: 7.8s; animation-delay: 3.8s; }
+        .particle:nth-child(17) { left: 60%; width: 7px; height: 7px; animation-duration: 11.5s; animation-delay: 0.1s; }
+        .particle:nth-child(18) { left: 95%; width: 23px; height: 23px; animation-duration: 9.8s; animation-delay: 4.8s; }
+        .particle:nth-child(19) { left: 50%; width: 12px; height: 12px; animation-duration: 6.8s; animation-delay: 2.1s; }
+        .particle:nth-child(20) { left: 8%; width: 24px; height: 24px; animation-duration: 13.5s; animation-delay: 1.1s; }
+
+        @keyframes float-up {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .floating-shapes {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; /* Ensure shapes are behind particles slightly, but above main bg */
+            pointer-events: none;
+        }
+        .shape {
+            position: absolute; background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%; animation: gentle-float 15s ease-in-out infinite;
+        }
+        .shape:nth-child(1) { width: 120px; height: 120px; left: 5%; top: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 80px; height: 80px; right: 10%; top: 70%; animation-delay: -5s; }
+        .shape:nth-child(3) { width: 60px; height: 60px; left: 80%; top: 20%; animation-delay: -10s; }
+
+        @keyframes gentle-float {
+            0%, 100% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0.3; }
+            25% { transform: translateY(-20px) translateX(10px) scale(1.1); opacity: 0.5; }
+            50% { transform: translateY(-10px) translateX(-10px) scale(0.9); opacity: 0.7; }
+            75% { transform: translateY(-30px) translateX(5px) scale(1.05); opacity: 0.4; }
+        }
+          .circle {
+            position:fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.3) 70%, transparent 100%);
+            transform: translate(-50%, -50%);
+            animation: fadeOut 1s ease-out forwards;
+            z-index:4;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+        }
+
+        .main-cursor {
+            position:fixed;
+            width: 10px;
+            height: 10px;
+            border: 2px solid white;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+            z-index:4;
+        }
+        /* Basic styling for utility cards */
+        .utility-card {
+            background-color: #ffffff;
+            border-radius: 1.5rem; /* Even more rounded corners */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Stronger shadow */
+            margin-bottom: 2.5rem; /* Increased margin between cards for better separation */
+            transition: all 0.3s ease-in-out; /* Smooth transition for all properties */
+            border: 1px solid #e2e8f0; /* Subtle border */
+            overflow: hidden; /* Hide overflowing content during collapse */
+        }
+        .utility-card:hover {
+            transform: translateY(-8px) scale(1.01); /* More pronounced lift and slight scale on hover */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); /* Even stronger shadow on hover */
+        }
+
+        /* Accordion Header Styling */
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem; /* Padding for the header */
+            cursor: pointer;
+            background-color: #f8fafc; /* Lighter background for headers */
+            border-bottom: 1px solid #e2e8f0; /* Separator for headers */
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700; /* font-bold */
+            color: #1f2937; /* text-gray-900 */
+            transition: background-color 0.2s ease-in-out;
+            border-top-left-radius: 1.5rem; /* Match card border-radius */
+            border-top-right-radius: 1.5rem;
+        }
+
+        .accordion-header:hover {
+            background-color: #eff6ff; /* Light blue on hover */
+        }
+
+        /* Accordion Content Styling */
+        .accordion-content {
+            padding: 2rem; /* Padding for the content area */
+            background-color: #ffffff;
+            border-bottom-left-radius: 1.5rem; /* Match card border-radius */
+            border-bottom-right-radius: 1.5rem;
+        }
+
+        /* Accordion Icon Styling */
+        .accordion-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .accordion-header.expanded .accordion-icon {
+            transform: rotate(180deg); /* Rotate icon when expanded */
+        }
+
+        /* Style for buttons */
+        .btn-primary {
+            background-image: linear-gradient(to right, #6366f1, #4f46e5); /* Gradient primary button */
+            color: white;
+            padding: 0.85rem 1.5rem; /* Increased padding */
+            border-radius: 0.75rem; /* Rounded button corners */
+            font-weight: 700; /* Bolder font */
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Button shadow */
+        }
+        .btn-primary:hover {
+            background-image: linear-gradient(to right, #4f46e5, #4338ca); /* Darker gradient on hover */
+            transform: translateY(-2px); /* Slight lift on hover */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Deeper shadow on hover */
+        }
+        .btn-secondary {
+            background-color: #e2e8f0; /* Slate 200 */
+            color: #475569; /* Slate 700 */
+            padding: 0.85rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .btn-secondary:hover {
+            background-color: #cbd5e1; /* Slate 300 on hover */
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        /* Input field styling */
+        input[type="number"],
+        input[type="text"],
+        textarea,
+        select,
+        input[type="date"] { /* Added date input */
+            border: 1px solid #cbd5e1; /* Slate 300 */
+            border-radius: 0.65rem; /* Slightly more rounded input fields */
+            padding: 0.85rem 1.15rem; /* Increased padding */
+            width: 100%;
+            box-sizing: border-box; /* Include padding in width */
+            margin-bottom: 1rem; /* Consistent margin */
+            font-size: 1.05rem; /* Slightly larger font */
+            color: #334155;
+            transition: all 0.2s ease-in-out;
+        }
+        input:focus,
+        textarea:focus,
+        select:focus,
+        input[type="date"]:focus { /* Added date input focus */
+            outline: none;
+            border-color: #6366f1; /* Indigo 500 on focus */
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3); /* More prominent focus ring */
+            background-color: #f9fafb; /* Slight background change on focus */
+        }
+        /* Specific styling for password generator result */
+        #generated-password {
+            background-color: #e2e8f0;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            word-break: break-all;
+            text-align: center;
+            min-height: 3rem; /* Ensure some height even if empty */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Inset shadow for result box */
+            color: #1f2937; /* Darker text for generated password */
+            font-size: 1.1rem;
+        }
+
+        /* Calculator specific styles */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* 5 columns for more scientific functions */
+            gap: 0.65rem; /* Slightly larger gap */
+        }
+        .calculator-display {
+            background-color: #1a202c; /* Dark background for display */
+            color: #ffffff;
+            font-size: 2.8rem; /* Larger font for display */
+            padding: 1.25rem 1.5rem; /* Increased padding */
+            border-radius: 0.75rem; /* More rounded display */
+            text-align: right;
+            grid-column: span 5; /* Span across all columns */
+            margin-bottom: 1.25rem; /* Increased margin */
+            overflow-x: auto; /* Allow horizontal scrolling for long numbers */
+            white-space: nowrap; /* Prevent wrapping */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3); /* Inset shadow for display */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Subtle text shadow */
+        }
+        .calculator-button {
+            background-color: #f1f5f9; /* Lighter gray for buttons */
+            color: #334155;
+            padding: 1.1rem; /* Increased padding */
+            border-radius: 0.65rem; /* More rounded buttons */
+            font-size: 1.3rem; /* Larger font */
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border: none;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.08); /* Button shadow */
+        }
+        .calculator-button:hover {
+            background-color: #e2e8f0; /* Slightly darker on hover */
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12);
+        }
+        .calculator-button.operator {
+            background-color: #6366f1; /* Indigo for operators */
+            color: white;
+        }
+        .calculator-button.operator:hover {
+            background-color: #4f46e5; /* Darker indigo on hover */
+        }
+        .calculator-button.equals {
+            background-color: #10b981; /* Emerald for equals */
+            color: white;
+            grid-column: span 2; /* Span two columns */
+        }
+        .calculator-button.equals:hover {
+            background-color: #059669; /* Darker emerald on hover */
+        }
+        .calculator-button.clear, .calculator-button.del {
+            background-color: #ef4444; /* Red for clear and delete */
+            color: white;
+        }
+        .calculator-button.clear:hover, .calculator-button.del:hover {
+            background-color: #dc2626; /* Darker red on hover */
+        }
+        .calculator-button.function {
+            background-color: #a78bfa; /* Purple for functions */
+            color: white;
+        }
+        .calculator-button.function:hover {
+            background-color: #8b5cf6; /* Darker purple on hover */
+        }
+        .calculator-button.constant {
+            background-color: #fcd34d; /* Amber for constants */
+            color: #334155;
+        }
+        .calculator-button.constant:hover {
+            background-color: #fbbf24; /* Darker amber on hover */
+        }
+        /* Make equals button span 2 columns */
+        .calculator-grid .equals {
+            grid-column: span 2;
+        }
+        /* Make 0 button span 2 columns */
+        .calculator-grid .zero-button {
+            grid-column: span 2;
+        }
+
+        /* Date Calculator specific styles */
+        #date-result {
+            background-color: #e2e8f0;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            min-height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1f2937;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Color Picker specific styles */
+        #color-display {
+            width: 100%;
+            height: 100px;
+            border-radius: 0.75rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #cbd5e1;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        #color-input {
+            width: 100%;
+            height: 50px; /* Larger color input */
+            border: none;
+            padding: 0;
+            border-radius: 0.65rem;
+            cursor: pointer;
+        }
+        .color-value-display {
+            background-color: #e2e8f0;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            color: #1f2937;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Study Links specific styles */
+        .study-links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .study-link-item {
+            background-color: #f8fafc; /* Lighter background for links */
+            padding: 1rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease-in-out;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .study-link-item:hover {
+            background-color: #eff6ff; /* Light blue on hover */
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .study-link-item a {
+            font-weight: 600;
+            color: #4f46e5; /* Primary indigo color for links */
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+        .study-link-item a:hover {
+            text-decoration: underline;
+            color: #4338ca; /* Darker indigo on hover */
+        }
+
+        /* Exam Planner specific styles */
+        .exam-item {
+            display: flex;
+            align-items: center;
+            background-color: #f8fafc;
+            padding: 0.75rem 1rem;
+            border-radius: 0.65rem;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s ease-in-out;
+        }
+        .exam-item.studied {
+            background-color: #dcfce7; /* Light green for studied exams */
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+        .exam-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .exam-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .exam-name-display {
+            font-weight: 600;
+            color: #334155;
+            font-size: 1.1rem;
+        }
+        .exam-meta {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        .exam-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-left: 1rem;
+        }
+        .exam-actions button {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .exam-actions .mark-studied-btn {
+            background-color: #34d399; /* Emerald 400 */
+            color: white;
+        }
+        .exam-actions .mark-studied-btn:hover {
+            background-color: #10b981; /* Emerald 500 */
+        }
+        .exam-actions .delete-exam-btn {
+            background-color: #f87171; /* Red 400 */
+            color: white;
+        }
+        .exam-actions .delete-exam-btn:hover {
+            background-color: #ef4444; /* Red 500 */
+        }
+
+        /* Unit Converter specific styles */
+        .unit-result-display {
+            background-color: #e2e8f0;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            min-height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1f2937;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-top: 1rem;
+        }
+
+        /* Text Summarizer specific styles */
+        #summarized-text-output {
+            background-color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            min-height: 8rem;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            color: #1f2937;
+            font-size: 1rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .loading-indicator {
+            text-align: center;
+            padding: 1rem;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        /* Calendar specific styles */
+        .calendar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 400px; /* Limit calendar width */
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #334155;
+        }
+        .calendar-header button {
+            background-color: #e2e8f0;
+            color: #475569;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .calendar-header button:hover {
+            background-color: #cbd5e1;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            width: 100%;
+            text-align: center;
+        }
+        .calendar-grid div {
+            padding: 0.75rem 0.25rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #475569;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .calendar-grid .day-name {
+            font-weight: bold;
+            color: #1f2937;
+            background-color: #f1f5f9;
+        }
+        .calendar-grid .day {
+            cursor: pointer;
+        }
+        .calendar-grid .day:hover:not(.empty):not(.current-day) {
+            background-color: #e0e7ff;
+        }
+        .calendar-grid .empty {
+            background-color: transparent;
+            cursor: default;
+        }
+        .calendar-grid .current-day {
+            background-color: #6366f1;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Goal Tracker specific styles */
+        .goal-item {
+            display: flex;
+            align-items: center;
+            background-color: #f8fafc;
+            padding: 0.75rem 1rem;
+            border-radius: 0.65rem;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s ease-in-out;
+        }
+        .goal-item.completed {
+            background-color: #dcfce7; /* Light green for completed goals */
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+        .goal-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .goal-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .goal-name-display {
+            font-weight: 600;
+            color: #334155;
+            font-size: 1.1rem;
+        }
+        .goal-meta {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        .goal-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-left: 1rem;
+        }
+        .goal-actions button {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .goal-actions .mark-complete-btn {
+            background-color: #34d399; /* Emerald 400 */
+            color: white;
+        }
+        .goal-actions .mark-complete-btn:hover {
+            background-color: #10b981; /* Emerald 500 */
+        }
+        .goal-actions .delete-goal-btn {
+            background-color: #f87171; /* Red 400 */
+            color: white;
+        }
+        .goal-actions .delete-goal-btn:hover {
+            background-color: #ef4444; /* Red 500 */
+        }
+
+        /* Reading Time Calculator styles */
+        #reading-time-output {
+            background-color: #e2e8f0;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            min-height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1f2937;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-top: 1rem;
+        }
+         @media (max-width: 767px) {
+            header { margin-top: 15rem; }
+            .nav-container {
+                display: flex;
+                justify-content: space-between;
+                flex-direction: column;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8">
+<div class="animated-bg">
+        <div class="particles">
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+            <div class="particle"></div> <div class="particle"></div> <div class="particle"></div> <div class="particle"></div>
+        </div>
+    </div>
+
+    <div class="floating-shapes">
+        <div class="shape"></div> <div class="shape"></div> <div class="shape"></div>
+    </div>
+<div class="main-cursor" id="mainCursor"></div>
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">Lumina</div>
+                <div class="nav-links">
+                    <a href="../index.html">Home</a>
+                    <a href="utilities.html">Utilities</a>
+                    <a href="blog.html">Blogs</a>
+                    <a href="about_us.html">About Us</a>
+                    <a href="contactus.html">Contact</a>
+                </div>
+                <div class="search-container">
+                    <button class="theme-toggle" onclick="toggleTheme()">🌙/☀️</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <header class="text-center mb-12">
+        <h1 class="text-6xl font-extrabold text-gray-900 mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);color:white">Daily Utilities</h1>
+        <p class="text-xl text-gray-600" style="color:white">Your one-stop hub for academic tools and resources.</p>
+    </header>
+
+    <main class="w-full max-w-4xl">
+        <div class="utility-card">
+            <div class="accordion-header" data-target="calendar-content">
+                <h2 class="text-3xl font-bold text-gray-800">Calendar</h2>
+                <span class="accordion-icon">&#9660;</span>
+            </div>
+            <div id="calendar-content" class="accordion-content hidden">
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button id="prev-month-btn">&lt;</button>
+                        <span id="current-month-year"></span>
+                        <button id="next-month-btn">&gt;</button>
+                    </div>
+                    <div class="calendar-grid" id="calendar-grid">
+                        <div class="day-name">Sun</div>
+                        <div class="day-name">Mon</div>
+                        <div class="day-name">Tue</div>
+                        <div class="day-name">Wed</div>
+                        <div class="day-name">Thu</div>
+                        <div class="day-name">Fri</div>
+                        <div class="day-name">Sat</div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="utility-card">
+            <div class="accordion-header" data-target="exam-planner-content">
+                <h2 class="text-3xl font-bold text-gray-800">Exam Planner</h2>
+                <span class="accordion-icon">&#9660;</span>
+            </div>
+            <div id="exam-planner-content" class="accordion-content hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label for="exam-name" class="block text-sm font-medium text-gray-700 mb-1">Exam Name</label>
+                        <input type="text" id="exam-name" placeholder="e.g., Calculus Midterm">
+                    </div>
+                    <div>
+                        <label for="exam-date" class="block text-sm font-medium text-gray-700 mb-1">Exam Date</label>
+                        <input type="date" id="exam-date">
+                    </div>
+                    <div>
+                        <label for="exam-subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                        <select id="exam-subject">
+                            <option value="Math">Math</option>
+                            <option value="Science">Science</option>
+                            <option value="History">History</option>
+                            <option value="English">English</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="add-exam-btn" class="btn-primary w-full sm:w-auto mb-6">Add Exam</button>
+
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">Your Exams</h3>
+                <div id="exam-list-container" class="space-y-3">
+                    <p class="text-gray-500" id="no-exams-message">No exams added yet.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="utility-card">
+            <div class="accordion-header" data-target="goal-tracker-content">
+                <h2 class="text-3xl font-bold text-gray-800">Goal Tracker</h2>
+                <span class="accordion-icon">&#9660;</span>
+            </div>
+            <div id="goal-tracker-content" class="accordion-content hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="goal-name" class="block text-sm font-medium text-gray-700 mb-1">Goal Name</label>
+                        <input type="text" id="goal-name" placeholder="e.g., Read 5 books this semester">
+                    </div>
+                    <div>
+                        <label for="goal-target-date" class="block text-sm font-medium text-gray-700 mb-1">Target Date</label>
+                        <input type="date" id="goal-target-date">
+                    </div>
+                </div>
+                <button id="add-goal-btn" class="btn-primary w-full sm:w-auto mb-6">Add Goal</button>
+
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">Your Goals</h3>
+                <div id="goal-list-container" class="space-y-3">
+                    <p class="text-gray-500" id="no-goals-message">No goals added yet.</p>
+                </div>
+            </div>
+        </div>
+<!-- 
+        <div class="utility-card">
+            <div class="accordion-header" data-target="reading-time-calculator-content">
+                <h2 class="text-3xl font-bold text-gray-800">Reading Time Calculator</h2>
+                <span class="accordion-icon">&#9660;</span>
+            </div>
+            <div id="reading-time-calculator-content" class="accordion-content hidden">
+                <textarea id="reading-text-input" rows="10" placeholder="Paste your text here to estimate reading time..."></textarea>
+                <div class="mb-4">
+                    <label for="wpm-input" class="block text-sm font-medium text-gray-700 mb-1">Words Per Minute (WPM)</label>
+                    <input type="number" id="wpm-input" value="200" min="10" class="w-full">
+                </div>
+                <button id="calculate-reading-time-btn" class="btn-primary w-full sm:w-auto mb-6">Calculate Reading Time</button>
+                <p id="reading-time-output" class="text-gray-800 text-lg font-mono">Estimated Reading Time: --</p>
+            </div>
+        </div> -->
+<!-- 
+        <div class="utility-card">
+            <div class="accordion-header" data-target="text-summarizer-content">
+                <h2 class="text-3xl font-bold text-gray-800">Text Summarizer</h2>
+                <span class="accordion-icon">&#9660;</span>
+            </div>
+            <div id="text-summarizer-content" class="accordion-content hidden">
+                <textarea id="summarizer-input-text" rows="10" placeholder="Paste your text here to get a summary..."></textarea>
+                <button id="summarize-btn" class="btn-primary w-full sm:w-auto mb-6">Summarize Text</button>
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">Summary</h3>
+                <div id="summarized-text-output">
+                    <p class="text-gray-500">Your summary will appear here.</p>
+                </div>
+                <div id="summarizer-loading" class="loading-indicator hidden">Summarizing...</div>
+            </div>
+        </div> -->
+<!-- 
+        <div class="utility-card">
+            <div class="accordion-header" data-target="unit-converter-content">
+                <h2 class="text-3xl font-bold text-gray-800">Unit Converter</h2>
+                <span class="accordion-icon">&#9660;</span>
+            </div>
+            <div id="unit-converter-content" class="accordion-content hidden">
+                <div class="mb-4">
+                    <label for="conversion-category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <select id="conversion-category">
+                        <option value="length">Length</option>
+                        <option value="weight">Weight</option>
+                        <option value="temperature">Temperature</option>
+                        <option value="volume">Volume</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="convert-value" class="block text-sm font-medium text-gray-700 mb-1">Value</label>
+                        <input type="number" id="convert-value" placeholder="Enter value">
+                    </div>
+                    <div>
+                        <label for="from-unit" class="block text-sm font-medium text-gray-700 mb-1">From Unit</label>
+                        <select id="from-unit"></select> </div>
+                    <div>
+                        <label for="to-unit" class="block text-sm font-medium text-gray-700 mb-1">To Unit</label>
+                        <select id="to-unit"></select> </div>
+                </div>
+                <button id="convert-unit-btn" class="btn-primary w-full sm:w-auto mt-6">Convert</button>
+                <p class="unit-result-display">Result: <span id="unit-result" class="text-indigo-600">--</span></p>
+            </div>
+        </div> -->
+<!-- 
+        <div class="utility-card">
+            <div class="accordion-header" data-target="scientific-calculator-content">
+                <h2 class="text-3xl font-bold text-gray-800">Scientific Calculator</h2>
+                <span class="accordion-icon">&#9660;</span>
+            </div>
+            <div id="scientific-calculator-content" class="accordion-content hidden">
+                <div class="calculator-display" id="calc-display">0</div>
+                <div class="calculator-grid">
+                    <button class="calculator-button clear" data-value="C">C</button>
+                    <button class="calculator-button del" data-value="DEL">DEL</button>
+                    <button class="calculator-button operator" data-value="(">(</button>
+                    <button class="calculator-button operator" data-value=")">)</button>
+                    <button class="calculator-button operator" data-value="/">/</button>
+
+                    <button class="calculator-button function" data-value="sin">sin</button>
+                    <button class="calculator-button function" data-value="cos">cos</button>
+                    <button class="calculator-button function" data-value="tan">tan</button>
+                    <button class="calculator-button function" data-value="exp">eˣ</button>
+                    <button class="calculator-button operator" data-value="*">*</button>
+
+                    <button class="calculator-button function" data-value="log">log₁₀</button>
+                    <button class="calculator-button function" data-value="ln">ln</button>
+                    <button class="calculator-button function" data-value="sqrt">√</button>
+                    <button class="calculator-button function" data-value="abs">|x|</button>
+                    <button class="calculator-button operator" data-value="-">-</button>
+
+                    <button class="calculator-button function" data-value="pow">xʸ</button>
+                    <button class="calculator-button function" data-value="sq">x²</button>
+                    <button class="calculator-button function" data-value="ceil">ceil</button>
+                    <button class="calculator-button function" data-value="floor">floor</button>
+                    <button class="calculator-button operator" data-value="+">+</button>
+
+                    <button class="calculator-button" data-value="7">7</button>
+                    <button class="calculator-button" data-value="8">8</button>
+                    <button class="calculator-button" data-value="9">9</button>
+                    <button class="calculator-button constant" data-value="pi">π</button>
+                    <button class="calculator-button constant" data-value="e">e</button>
+
+                    <button class="calculator-button" data-value="4">4</button>
+                    <button class="calculator-button" data-value="5">5</button>
+                    <button class="calculator-button" data-value="6">6</button>
+                    <button class="calculator-button function" data-value="round">round</button>
+                    <button class="calculator-button equals" data-value="=">=</button>
+
+                    <button class="calculator-button" data-value="1">1</button>
+                    <button class="calculator-button" data-value="2">2</button>
+                    <button class="calculator-button" data-value="3">3</button>
+                    <button class="calculator-button zero-button" data-value="0">0</button>
+                    <button class="calculator-button" data-value=".">.</button>
+                </div>
+            </div>
+        </div> -->
+<!-- 
+        <div class="utility-card">
+            <div class="accordion-header" data-target="date-calculator-content">
+                <h2 class="text-3xl font-bold text-gray-800">Date Calculator</h2>
+                <span class="accordion-icon">&#9660;</span>
+            </div>
+            <div id="date-calculator-content" class="accordion-content hidden">
+                <div class="mb-4">
+                    <label for="start-date" class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                    <input type="date" id="start-date" class="mb-2">
+                </div>
+                <div class="mb-4">
+                    <label for="end-date" class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                    <input type="date" id="end-date">
+                </div>
+                <button id="calculate-days-btn" class="btn-primary w-full sm:w-auto mb-4">Calculate Days Between</button>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                    <div>
+                        <label for="base-date" class="block text-sm font-medium text-gray-700 mb-1">Base Date</label>
+                        <input type="date" id="base-date" class="mb-2">
+                    </div>
+                    <div>
+                        <label for="days-to-add-subtract" class="block text-sm font-medium text-gray-700 mb-1">Days to Add/Subtract</label>
+                        <input type="number" id="days-to-add-subtract" value="0">
+                    </div>
+                </div>
+                <div class="flex space-x-4 mt-4">
+                    <button id="add-days-btn" class="btn-secondary flex-1">Add Days</button>
+                    <button id="subtract-days-btn" class="btn-secondary flex-1">Subtract Days</button>
+                </div>
+                <p class="mt-4 text-lg font-semibold text-gray-800">Result: <span id="date-result" class="text-indigo-600">--</span></p>
+            </div>
+        </div> -->
+
+        <div class="utility-card">
+            <div class="accordion-header" data-target="color-picker-content">
+                <h2 class="text-3xl font-bold text-gray-800">Color Picker</h2>
+                <span class="accordion-icon">&#9660;</span>
+            </div>
+            <div id="color-picker-content" class="accordion-content hidden">
+                <div class="flex flex-col items-center">
+                    <input type="color" id="color-input" value="#4f46e5">
+                    <div id="color-display" style="background-color: #4f46e5;"></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                        <div class="color-value-display">RGB: <span id="rgb-value">--</span></div>
+                        <div class="color-value-display">HEX: <span id="hex-value">--</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="utility-card">
+            <div class="accordion-header" data-target="study-links-content">
+                <h2 class="text-3xl font-bold text-gray-800">Common Study Links</h2>
+                <span class="accordion-icon">&#9660;</span>
+            </div>
+            <div id="study-links-content" class="accordion-content hidden">
+                <div class="study-links-grid">
+                    <div class="study-link-item">
+                        <a href="https://scholar.google.com/" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+                    </div>
+                    <div class="study-link-item">
+                        <a href="https://www.khanacademy.org/" target="_blank" rel="noopener noreferrer">Khan Academy</a>
+                    </div>
+                    <div class="study-link-item">
+                        <a href="https://www.coursera.org/" target="_blank" rel="noopener noreferrer">Coursera</a>
+                    </div>
+                    <div class="study-link-item">
+                        <a href="https://www.edx.org/" target="_blank" rel="noopener noreferrer">edX</a>
+                    </div>
+                    <div class="study-link-item">
+                        <a href="https://www.researchgate.net/" target="_blank" rel="noopener noreferrer">ResearchGate</a>
+                    </div>
+                    <div class="study-link-item">
+                        <a href="https://www.academia.edu/" target="_blank" rel="noopener noreferrer">Academia.edu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="utility-card">
+            <div class="accordion-header" data-target="password-generator-content">
+                <h2 class="text-3xl font-bold text-gray-800">Random Password Generator</h2>
+                <span class="accordion-icon">&#9660;</span>
+            </div>
+            <div id="password-generator-content" class="accordion-content hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="password-length" class="block text-sm font-medium text-gray-700 mb-1">Password Length</label>
+                        <input type="number" id="password-length" value="12" min="4" max="64">
+                    </div>
+                    <div class="flex flex-col justify-end">
+                        <label class="inline-flex items-center mb-2">
+                            <input type="checkbox" id="include-numbers" class="form-checkbox h-5 w-5 text-indigo-600 rounded" checked>
+                            <span class="ml-2 text-gray-700">Include Numbers</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="checkbox" id="include-symbols" class="form-checkbox h-5 w-5 text-indigo-600 rounded" checked>
+                            <span class="ml-2 text-gray-700">Include Symbols</span>
+                        </label>
+                    </div>
+                </div>
+                <button id="generate-password-btn" class="btn-primary w-full sm:w-auto mb-4">Generate Password</button>
+                <div id="generated-password" class="text-gray-800 text-lg font-mono"></div>
+                <button id="copy-password-btn" class="btn-secondary w-full sm:w-auto mt-4">Copy to Clipboard</button>
+            </div>
+        </div>
+
+        <div class="utility-card">
+            <div class="accordion-header" data-target="study-timer-content">
+                <h2 class="text-3xl font-bold text-gray-800">Study Timer (Pomodoro Style)</h2>
+                <span class="accordion-icon">&#9660;</span>
+            </div>
+            <div id="study-timer-content" class="accordion-content hidden">
+                <div class="flex flex-col items-center justify-center mb-6">
+                    <div class="mb-4">
+                        <label for="timer-minutes" class="block text-sm font-medium text-gray-700 mb-1">Set Minutes</label>
+                        <input type="number" id="timer-minutes" value="25" min="1" class="text-center w-24">
+                    </div>
+                    <div class="text-6xl font-bold text-indigo-700 mb-6" id="timer-display">25:00</div>
+                    <div class="flex space-x-4">
+                        <button id="start-timer-btn" class="btn-primary">Start</button>
+                        <button id="pause-timer-btn" class="btn-secondary">Pause</button>
+                        <button id="reset-timer-btn" class="btn-secondary">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="utility-card">
+            <div class="accordion-header" data-target="note-taker-content">
+                <h2 class="text-3xl font-bold text-gray-800">Simple Note Taker</h2>
+                <span class="accordion-icon">&#9660;</span>
+            </div>
+            <div id="note-taker-content" class="accordion-content hidden">
+                <textarea id="note-content" rows="8" placeholder="Write your notes here..."></textarea>
+                <div class="flex space-x-4">
+                    <button id="save-note-btn" class="btn-primary">Save Note</button>
+                    <button id="clear-note-btn" class="btn-secondary">Clear Note</button>
+                </div>
+                <p class="mt-4 text-sm text-gray-500">
+                    Note: This is a simple note taker. Notes are saved to your browser's local storage.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-12 text-center text-gray-500 text-sm">
+        <p>&copy; 2025 Lumina. All rights reserved.</p>
+    </footer>
+
+    <script>
+                        // Theme Toggle
+      // Theme Toggle Functionality
+const themeToggle = document.querySelector('.theme-toggle');
+let isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+// Apply saved theme on load
+if (isDarkMode) {
+    document.body.classList.add('dark-mode');
+    themeToggle.textContent = '☀️ Light Mode';
+}
+
+function toggleTheme() {
+    isDarkMode = !isDarkMode;
+    document.body.classList.toggle('dark-mode', isDarkMode);
+    localStorage.setItem('darkMode', isDarkMode);
+
+    // Update button text
+    themeToggle.textContent = isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
+
+    // Update navbar background
+    updateNavbarBackground();
+}
+
+// Update navbar background based on scroll
+function updateNavbarBackground() {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 100) {
+        nav.style.background = isDarkMode 
+            ? 'rgba(15, 15, 35, 0.98)' 
+            : 'rgba(255, 255, 255, 0.98)';
+    } else {
+        nav.style.background = isDarkMode 
+            ? 'rgba(15, 15, 35, 0.95)' 
+            : 'rgba(255, 255, 255, 0.95)';
+    }
+}
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = document.body.classList.contains('dark-mode') 
+                    ? 'rgba(44, 62, 80, 0.98)' 
+                    : 'rgba(255, 255, 255, 0.98)';
+            } else {
+                nav.style.background = document.body.classList.contains('dark-mode') 
+                    ? 'rgba(44, 62, 80, 0.95)' 
+                    : 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+const mainCursor = document.getElementById('mainCursor');
+        let circles = [];
+
+        // Track mouse movement
+        document.addEventListener('mousemove', (e) => {
+            // Update main cursor position
+            mainCursor.style.left = e.clientX + 'px';
+            mainCursor.style.top = e.clientY + 'px';
+
+            // Create trailing circle
+            createCircle(e.clientX, e.clientY);
+        });
+
+        function createCircle(x, y) {
+            const circle = document.createElement('div');
+            circle.className = 'circle';
+            
+            // Random size between 10-30px
+            const size = Math.random() * 10 + 5;
+            circle.style.width = size + 'px';
+            circle.style.height = size + 'px';
+            
+            // Position the circle
+            circle.style.left = x + 'px';
+            circle.style.top = y + 'px';
+            
+            // Random color tint
+            const hue = Math.random() * 360;
+            circle.style.background = `radial-gradient(circle, hsla(${hue}, 70%, 80%, 0.8) 0%, hsla(${hue}, 70%, 80%, 0.3) 70%, transparent 100%)`;
+            
+            document.body.appendChild(circle);
+            circles.push(circle);
+
+            // Remove circle after animation completes
+            setTimeout(() => {
+                if (circle.parentNode) {
+                    circle.parentNode.removeChild(circle);
+                }
+                circles = circles.filter(c => c !== circle);
+            }, 1000);
+        }
+
+        // Clean up circles periodically to prevent memory issues
+        setInterval(() => {
+            circles.forEach(circle => {
+                if (!circle.parentNode) {
+                    circles = circles.filter(c => c !== circle);
+                }
+            });
+        }, 5000);
+
+        // Hide cursor when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            mainCursor.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            mainCursor.style.opacity = '1';
+        });
+        // --- Accordion Logic ---
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const targetId = header.dataset.target;
+                const content = document.getElementById(targetId);
+                const icon = header.querySelector('.accordion-icon');
+
+                // Toggle visibility
+                content.classList.toggle('hidden');
+                header.classList.toggle('expanded'); // Add/remove expanded class for icon rotation
+
+                // Close other open accordions
+                document.querySelectorAll('.accordion-header').forEach(otherHeader => {
+                    if (otherHeader !== header && otherHeader.classList.contains('expanded')) {
+                        const otherTargetId = otherHeader.dataset.target;
+                        const otherContent = document.getElementById(otherTargetId);
+                        const otherIcon = otherHeader.querySelector('.accordion-icon');
+
+                        otherContent.classList.add('hidden');
+                        otherHeader.classList.remove('expanded');
+                    }
+                });
+            });
+        });
+
+        // --- Calendar Logic ---
+        const currentMonthYearSpan = document.getElementById('current-month-year');
+        const prevMonthBtn = document.getElementById('prev-month-btn');
+        const nextMonthBtn = document.getElementById('next-month-btn');
+        const calendarGrid = document.getElementById('calendar-grid');
+
+        let currentDate = new Date(); // Stores the currently displayed month/year
+
+        function renderCalendar() {
+            calendarGrid.querySelectorAll('.day:not(.day-name)').forEach(day => day.remove()); // Clear old days
+
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth(); // 0-indexed
+
+            currentMonthYearSpan.textContent = new Date(year, month).toLocaleDateString('en-US', {
+                month: 'long',
+                year: 'numeric'
+            });
+
+            // Get first day of the month (0 = Sunday, 1 = Monday, etc.)
+            const firstDayOfMonth = new Date(year, month, 1).getDay();
+            // Get number of days in the current month
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Add empty divs for days before the first day of the month
+            for (let i = 0; i < firstDayOfMonth; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.classList.add('day', 'empty');
+                calendarGrid.appendChild(emptyDay);
+            }
+
+            // Add days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+                dayElement.textContent = day;
+
+                // Highlight current day
+                const today = new Date();
+                if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    dayElement.classList.add('current-day');
+                }
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+
+        prevMonthBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        });
+
+        nextMonthBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        });
+
+        // Initial render of the calendar
+        renderCalendar();
+
+        // --- Scientific Calculator Logic ---
+        const calcDisplay = document.getElementById('calc-display');
+        const calculatorButtons = document.querySelectorAll('.calculator-button');
+        let currentInput = '';
+
+        calculatorButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const value = button.dataset.value;
+
+                if (value === 'C') {
+                    currentInput = '';
+                    calcDisplay.textContent = '0';
+                } else if (value === 'DEL') {
+                    currentInput = currentInput.slice(0, -1);
+                    calcDisplay.textContent = currentInput === '' ? '0' : currentInput;
+                } else if (value === '=') {
+                    try {
+                        let expression = currentInput;
+
+                        // Replace constants
+                        expression = expression.replace(/π/g, 'Math.PI');
+                        expression = expression.replace(/e/g, 'Math.E');
+
+                        // Replace power operator (x^y)
+                        expression = expression.replace(/\^/g, '**');
+
+                        // Replace scientific functions with Math equivalents
+                        // Note: For trigonometric functions (sin, cos, tan), angles are converted from degrees to radians
+                        expression = expression.replace(/sin\(([^)]+)\)/g, (match, p1) => `Math.sin((${p1}) * Math.PI / 180)`);
+                        expression = expression.replace(/cos\(([^)]+)\)/g, (match, p1) => `Math.cos((${p1}) * Math.PI / 180)`);
+                        expression = expression.replace(/tan\(([^)]+)\)/g, (match, p1) => `Math.tan((${p1}) * Math.PI / 180)`);
+                        expression = expression.replace(/log\(([^)]+)\)/g, (match, p1) => `Math.log10(${p1})`); // Base 10 log
+                        expression = expression.replace(/ln\(([^)]+)\)/g, (match, p1) => `Math.log(${p1})`); // Natural log
+                        expression = expression.replace(/sqrt\(([^)]+)\)/g, (match, p1) => `Math.sqrt(${p1})`);
+                        expression = expression.replace(/sq\(([^)]+)\)/g, (match, p1) => `Math.pow(${p1}, 2)`); // For x^2
+                        expression = expression.replace(/exp\(([^)]+)\)/g, (match, p1) => `Math.exp(${p1})`); // e^x
+                        expression = expression.replace(/abs\(([^)]+)\)/g, (match, p1) => `Math.abs(${p1})`); // Absolute value
+                        expression = expression.replace(/ceil\(([^)]+)\)/g, (match, p1) => `Math.ceil(${p1})`); // Ceiling
+                        expression = expression.replace(/floor\(([^)]+)\)/g, (match, p1) => `Math.floor(${p1})`); // Floor
+                        expression = expression.replace(/round\(([^)]+)\)/g, (match, p1) => `Math.round(${p1})`); // Round
+
+                        let result = eval(expression);
+                        // Handle potential floating point inaccuracies for display
+                        if (typeof result === 'number' && !Number.isInteger(result)) {
+                            result = parseFloat(result.toFixed(10)); // Limit to 10 decimal places
+                        }
+                        calcDisplay.textContent = result;
+                        currentInput = result.toString(); // Allow chaining operations with the result
+                    } catch (e) {
+                        calcDisplay.textContent = 'Error';
+                        currentInput = '';
+                    }
+                } else if (['sin', 'cos', 'tan', 'log', 'ln', 'sqrt', 'sq', 'exp', 'abs', 'ceil', 'floor', 'round'].includes(value)) {
+                    // Append function name followed by an opening parenthesis
+                    currentInput += `${value}(`;
+                    calcDisplay.textContent = currentInput;
+                } else if (value === 'pi') {
+                    currentInput += 'π'; // Display π, will be replaced by Math.PI on eval
+                    calcDisplay.textContent = currentInput;
+                } else if (value === 'e') {
+                    currentInput += 'e'; // Display e, will be replaced by Math.E on eval
+                    calcDisplay.textContent = currentInput;
+                } else if (value === 'pow') {
+                    currentInput += '^'; // Insert '^' for power operation
+                    calcDisplay.textContent = currentInput;
+                }
+                else {
+                    // For numbers, operators, and parentheses
+                    currentInput += value;
+                    calcDisplay.textContent = currentInput;
+                }
+            });
+        });
+
+
+        // --- Date Calculator Logic ---
+        const startDateInput = document.getElementById('start-date');
+        const endDateInput = document.getElementById('end-date');
+        const calculateDaysBtn = document.getElementById('calculate-days-btn');
+        const baseDateInput = document.getElementById('base-date');
+        const daysToAddSubtractInput = document.getElementById('days-to-add-subtract');
+        const addDaysBtn = document.getElementById('add-days-btn');
+        const subtractDaysBtn = document.getElementById('subtract-days-btn');
+        const dateResultSpan = document.getElementById('date-result');
+
+        // Set today's date as default for date inputs
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        const day = String(today.getDate()).padStart(2, '0');
+        const todayFormatted = `${year}-${month}-${day}`;
+        startDateInput.value = todayFormatted;
+        endDateInput.value = todayFormatted;
+        baseDateInput.value = todayFormatted;
+
+
+        function calculateDaysBetween() {
+            const start = new Date(startDateInput.value);
+            const end = new Date(endDateInput.value);
+
+            if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+                dateResultSpan.textContent = 'Please select valid dates.';
+                return;
+            }
+
+            const diffTime = Math.abs(end.getTime() - start.getTime());
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            dateResultSpan.textContent = `${diffDays} days`;
+        }
+
+        function addSubtractDays(operation) {
+            const baseDate = new Date(baseDateInput.value);
+            const days = parseInt(daysToAddSubtractInput.value);
+
+            if (isNaN(baseDate.getTime()) || isNaN(days)) {
+                dateResultSpan.textContent = 'Please enter valid date and days.';
+                return;
+            }
+
+            const newDate = new Date(baseDate);
+            if (operation === 'add') {
+                newDate.setDate(baseDate.getDate() + days);
+            } else if (operation === 'subtract') {
+                newDate.setDate(baseDate.getDate() - days);
+            }
+
+            const newDateFormatted = newDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            dateResultSpan.textContent = newDateFormatted;
+        }
+
+        calculateDaysBtn.addEventListener('click', calculateDaysBetween);
+        addDaysBtn.addEventListener('click', () => addSubtractDays('add'));
+        subtractDaysBtn.addEventListener('click', () => addSubtractDays('subtract'));
+
+
+        // --- Color Picker Logic ---
+        const colorInput = document.getElementById('color-input');
+        const colorDisplay = document.getElementById('color-display');
+        const rgbValueSpan = document.getElementById('rgb-value');
+        const hexValueSpan = document.getElementById('hex-value');
+
+        function updateColorInfo() {
+            const hex = colorInput.value;
+            colorDisplay.style.backgroundColor = hex;
+            hexValueSpan.textContent = hex.toUpperCase();
+
+            // Convert HEX to RGB
+            let r = 0, g = 0, b = 0;
+            if (hex.length === 7) { // #RRGGBB
+                r = parseInt(hex.slice(1, 3), 16);
+                g = parseInt(hex.slice(3, 5), 16);
+                b = parseInt(hex.slice(5, 7), 16);
+            }
+            rgbValueSpan.textContent = `rgb(${r}, ${g}, ${b})`;
+        }
+
+        colorInput.addEventListener('input', updateColorInfo);
+        // Initial update on load
+        updateColorInfo();
+
+
+        // --- Exam Planner Logic ---
+        const examNameInput = document.getElementById('exam-name');
+        const examDateInput = document.getElementById('exam-date');
+        const examSubjectSelect = document.getElementById('exam-subject');
+        const addExamBtn = document.getElementById('add-exam-btn');
+        const examListContainer = document.getElementById('exam-list-container');
+        const noExamsMessage = document.getElementById('no-exams-message');
+
+        let exams = JSON.parse(localStorage.getItem('examPlannerExams')) || [];
+
+        function saveExams() {
+            localStorage.setItem('examPlannerExams', JSON.stringify(exams));
+        }
+
+        function renderExams() {
+            examListContainer.innerHTML = ''; // Clear existing exams
+            if (exams.length === 0) {
+                noExamsMessage.style.display = 'block';
+                return;
+            } else {
+                noExamsMessage.style.display = 'none';
+            }
+
+            // Sort exams: unstudied first, then by date (earliest first)
+            const sortedExams = [...exams].sort((a, b) => {
+                if (a.studied !== b.studied) {
+                    return a.studied ? 1 : -1; // Unstudied exams come first
+                }
+                // Sort by exam date (earliest first)
+                const dateA = new Date(a.examDate);
+                const dateB = new Date(b.examDate);
+                return dateA.getTime() - dateB.getTime();
+            });
+
+
+            sortedExams.forEach((exam, index) => {
+                const examElement = document.createElement('div');
+                examElement.className = `exam-item ${exam.studied ? 'studied' : ''}`;
+                examElement.innerHTML = `
+                    <div class="exam-details">
+                        <span class="exam-name-display">${exam.examName}</span>
+                        <span class="exam-meta">Date: ${exam.examDate} | Subject: ${exam.examSubject}</span>
+                    </div>
+                    <div class="exam-actions">
+                        <button class="mark-studied-btn" data-index="${index}">${exam.studied ? 'Unmark Studied' : 'Mark Studied'}</button>
+                        <button class="delete-exam-btn" data-index="${index}">Delete</button>
+                    </div>
+                `;
+
+                // Add event listeners to the buttons within the exam item
+                examElement.querySelector('.mark-studied-btn').addEventListener('click', (e) => {
+                    const examIndex = parseInt(e.target.dataset.index);
+                    // Find the original exam in the 'exams' array based on its unique identifier or re-render logic.
+                    // For simplicity, we'll find it by name and date here, but a unique ID is better.
+                    const originalExam = exams.find(ex => ex.examName === sortedExams[examIndex].examName && ex.examDate === sortedExams[examIndex].examDate);
+                    if (originalExam) {
+                        originalExam.studied = !originalExam.studied;
+                        saveExams();
+                        renderExams(); // Re-render to apply new sorting/styling
+                    }
+                });
+
+                examElement.querySelector('.delete-exam-btn').addEventListener('click', (e) => {
+                    const examIndex = parseInt(e.target.dataset.index);
+                    // Filter out the exam based on its properties
+                    exams = exams.filter(ex => !(ex.examName === sortedExams[examIndex].examName && ex.examDate === sortedExams[examIndex].examDate && ex.examSubject === sortedExams[examIndex].examSubject));
+                    saveExams();
+                    renderExams(); // Re-render the list
+                });
+
+                examListContainer.appendChild(examElement);
+            });
+        }
+
+        addExamBtn.addEventListener('click', () => {
+            const name = examNameInput.value.trim();
+            const date = examDateInput.value;
+            const subject = examSubjectSelect.value;
+
+            if (name && date) {
+                const newExam = {
+                    examName: name,
+                    examDate: date,
+                    examSubject: subject,
+                    studied: false,
+                    id: Date.now() // Simple unique ID
+                };
+                exams.push(newExam);
+                saveExams();
+                renderExams();
+                // Clear form
+                examNameInput.value = '';
+                examDateInput.value = '';
+                examSubjectSelect.value = 'Math';
+            } else {
+                console.log('Please fill in exam name and date.');
+            }
+        });
+
+        // Initial render of exams on load
+        renderExams();
+
+        // --- Goal Tracker Logic ---
+        const goalNameInput = document.getElementById('goal-name');
+        const goalTargetDateInput = document.getElementById('goal-target-date');
+        const addGoalBtn = document.getElementById('add-goal-btn');
+        const goalListContainer = document.getElementById('goal-list-container');
+        const noGoalsMessage = document.getElementById('no-goals-message');
+
+        let goals = JSON.parse(localStorage.getItem('studentGoals')) || [];
+
+        function saveGoals() {
+            localStorage.setItem('studentGoals', JSON.stringify(goals));
+        }
+
+        function renderGoals() {
+            goalListContainer.innerHTML = ''; // Clear existing goals
+            if (goals.length === 0) {
+                noGoalsMessage.style.display = 'block';
+                return;
+            } else {
+                noGoalsMessage.style.display = 'none';
+            }
+
+            // Sort goals: incomplete first, then by target date (earliest first)
+            const sortedGoals = [...goals].sort((a, b) => {
+                if (a.completed !== b.completed) {
+                    return a.completed ? 1 : -1; // Incomplete goals come first
+                }
+                const dateA = new Date(a.targetDate);
+                const dateB = new Date(b.targetDate);
+                return dateA.getTime() - dateB.getTime();
+            });
+
+            sortedGoals.forEach((goal, index) => {
+                const goalElement = document.createElement('div');
+                goalElement.className = `goal-item ${goal.completed ? 'completed' : ''}`;
+                goalElement.innerHTML = `
+                    <div class="goal-details">
+                        <span class="goal-name-display">${goal.name}</span>
+                        <span class="goal-meta">Target: ${goal.targetDate}</span>
+                    </div>
+                    <div class="goal-actions">
+                        <button class="mark-complete-btn" data-index="${index}">${goal.completed ? 'Unmark' : 'Complete'}</button>
+                        <button class="delete-goal-btn" data-index="${index}">Delete</button>
+                    </div>
+                `;
+
+                goalElement.querySelector('.mark-complete-btn').addEventListener('click', (e) => {
+                    const goalIndex = parseInt(e.target.dataset.index);
+                    const originalGoal = goals.find(g => g.name === sortedGoals[goalIndex].name && g.targetDate === sortedGoals[goalIndex].targetDate);
+                    if (originalGoal) {
+                        originalGoal.completed = !originalGoal.completed;
+                        saveGoals();
+                        renderGoals();
+                    }
+                });
+
+                goalElement.querySelector('.delete-goal-btn').addEventListener('click', (e) => {
+                    const goalIndex = parseInt(e.target.dataset.index);
+                    goals = goals.filter(g => !(g.name === sortedGoals[goalIndex].name && g.targetDate === sortedGoals[goalIndex].targetDate));
+                    saveGoals();
+                    renderGoals();
+                });
+                goalListContainer.appendChild(goalElement);
+            });
+        }
+
+        addGoalBtn.addEventListener('click', () => {
+            const name = goalNameInput.value.trim();
+            const targetDate = goalTargetDateInput.value;
+
+            if (name && targetDate) {
+                const newGoal = {
+                    name,
+                    targetDate,
+                    completed: false,
+                    id: Date.now()
+                };
+                goals.push(newGoal);
+                saveGoals();
+                renderGoals();
+                goalNameInput.value = '';
+                goalTargetDateInput.value = '';
+            } else {
+                console.log('Please fill in goal name and target date.');
+            }
+        });
+
+        // Initial render of goals on load
+        renderGoals();
+
+        // --- Reading Time Calculator Logic ---
+        const readingTextInput = document.getElementById('reading-text-input');
+        const wpmInput = document.getElementById('wpm-input');
+        const calculateReadingTimeBtn = document.getElementById('calculate-reading-time-btn');
+        const readingTimeOutput = document.getElementById('reading-time-output');
+
+        function calculateReadingTime() {
+            const text = readingTextInput.value.trim();
+            const wordsPerMinute = parseInt(wpmInput.value);
+
+            if (!text) {
+                readingTimeOutput.textContent = 'Please enter some text.';
+                return;
+            }
+            if (isNaN(wordsPerMinute) || wordsPerMinute <= 0) {
+                readingTimeOutput.textContent = 'Please enter a valid WPM.';
+                return;
+            }
+
+            const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
+            const minutes = wordCount / wordsPerMinute;
+            const fullMinutes = Math.floor(minutes);
+            const seconds = Math.round((minutes - fullMinutes) * 60);
+
+            let resultText = `Estimated Reading Time: `;
+            if (fullMinutes > 0) {
+                resultText += `${fullMinutes} min`;
+            }
+            if (seconds > 0) {
+                resultText += `${fullMinutes > 0 ? ' ' : ''}${seconds} sec`;
+            }
+            if (fullMinutes === 0 && seconds === 0) {
+                resultText += 'less than a minute';
+            }
+            readingTimeOutput.textContent = resultText;
+        }
+
+        readingTextInput.addEventListener('input', calculateReadingTime);
+        wpmInput.addEventListener('input', calculateReadingTime);
+        calculateReadingTimeBtn.addEventListener('click', calculateReadingTime);
+        // Initial calculation on load
+        calculateReadingTime();
+
+        // --- Text Summarizer Logic ---
+        const summarizerInputText = document.getElementById('summarizer-input-text');
+        const summarizeBtn = document.getElementById('summarize-btn');
+        const summarizedTextOutput = document.getElementById('summarized-text-output');
+        const summarizerLoading = document.getElementById('summarizer-loading');
+
+        async function summarizeText() {
+            const textToSummarize = summarizerInputText.value.trim();
+            if (textToSummarize.length < 50) { // Minimum length for a meaningful summary
+                summarizedTextOutput.innerHTML = '<p class="text-red-500">Please enter a longer text to summarize (at least 50 characters).</p>';
+                return;
+            }
+
+            summarizerLoading.classList.remove('hidden');
+            summarizedTextOutput.innerHTML = ''; // Clear previous summary
+
+            const prompt = `Summarize the following text concisely:\n\n${textToSummarize}`;
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            const payload = { contents: chatHistory };
+            const apiKey = "ourapikey"; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const summary = result.candidates[0].content.parts[0].text;
+                    summarizedTextOutput.textContent = summary;
+                } else {
+                    summarizedTextOutput.innerHTML = '<p class="text-red-500">Failed to generate summary. Please try again.</p>';
+                }
+            } catch (error) {
+                console.error('Error summarizing text:', error);
+                summarizedTextOutput.innerHTML = '<p class="text-red-500">An error occurred while summarizing. Please check your network connection.</p>';
+            } finally {
+                summarizerLoading.classList.add('hidden');
+            }
+        }
+
+        summarizeBtn.addEventListener('click', summarizeText);
+
+
+        // --- Comprehensive Unit Converter Logic ---
+        const conversionCategorySelect = document.getElementById('conversion-category');
+        const convertValueInput = document.getElementById('convert-value');
+        const fromUnitSelect = document.getElementById('from-unit');
+        const toUnitSelect = document.getElementById('to-unit');
+        const convertUnitBtn = document.getElementById('convert-unit-btn');
+        const unitResultDisplay = document.getElementById('unit-result');
+
+        const units = {
+            length: {
+                meters: 1,
+                feet: 3.28084,
+                inches: 39.3701,
+                centimeters: 100,
+                kilometers: 0.001,
+                miles: 0.000621371
+            },
+            weight: {
+                kilograms: 1,
+                pounds: 2.20462,
+                grams: 1000,
+                ounces: 35.274
+            },
+            temperature: {
+                celsius: { toBase: (val) => val, fromBase: (val) => val }, // Base is Celsius
+                fahrenheit: { toBase: (val) => (val - 32) * 5/9, fromBase: (val) => (val * 9/5) + 32 },
+                kelvin: { toBase: (val) => val - 273.15, fromBase: (val) => val + 273.15 }
+            },
+            volume: {
+                liters: 1,
+                gallons: 0.264172,
+                milliliters: 1000,
+                cubicmeters: 0.001,
+                cubicfeet: 0.0353147
+            }
+        };
+
+        function populateUnitDropdowns() {
+            const category = conversionCategorySelect.value;
+            const selectedUnits = units[category];
+
+            fromUnitSelect.innerHTML = '';
+            toUnitSelect.innerHTML = '';
+
+            for (const unit in selectedUnits) {
+                const optionFrom = document.createElement('option');
+                optionFrom.value = unit;
+                optionFrom.textContent = unit.charAt(0).toUpperCase() + unit.slice(1); // Capitalize first letter
+                fromUnitSelect.appendChild(optionFrom);
+
+                const optionTo = document.createElement('option');
+                optionTo.value = unit;
+                optionTo.textContent = unit.charAt(0).toUpperCase() + unit.slice(1);
+                toUnitSelect.appendChild(optionTo);
+            }
+            // Set a default selection to avoid empty values
+            if (fromUnitSelect.options.length > 0) {
+                fromUnitSelect.value = Object.keys(selectedUnits)[0];
+                toUnitSelect.value = Object.keys(selectedUnits)[0];
+                if (Object.keys(selectedUnits).length > 1) {
+                    toUnitSelect.value = Object.keys(selectedUnits)[1]; // Set a different default for 'to'
+                }
+            }
+        }
+
+        function convertUnits() {
+            const value = parseFloat(convertValueInput.value);
+            const category = conversionCategorySelect.value;
+            const fromUnit = fromUnitSelect.value;
+            const toUnit = toUnitSelect.value;
+
+            if (isNaN(value)) {
+                unitResultDisplay.textContent = 'Please enter a valid number.';
+                return;
+            }
+
+            let result;
+
+            if (category === 'temperature') {
+                // Convert from 'fromUnit' to base unit (Celsius)
+                const valueInBase = units[category][fromUnit].toBase(value);
+                // Convert from base unit (Celsius) to 'toUnit'
+                result = units[category][toUnit].fromBase(valueInBase);
+            } else {
+                // For other categories, convert to base unit (e.g., meters, kilograms)
+                const valueInBase = value / units[category][fromUnit];
+                // Convert from base unit to target unit
+                result = valueInBase * units[category][toUnit];
+            }
+
+            unitResultDisplay.textContent = result.toFixed(4);
+        }
+
+        // Event listeners for Unit Converter
+        conversionCategorySelect.addEventListener('change', populateUnitDropdowns);
+        convertUnitBtn.addEventListener('click', convertUnits);
+
+        // Initial population and conversion on load
+        populateUnitDropdowns();
+        convertUnits();
+
+
+        // --- Random Password Generator Logic ---
+        const generatePasswordBtn = document.getElementById('generate-password-btn');
+        const passwordLengthInput = document.getElementById('password-length');
+        const includeNumbersCheckbox = document.getElementById('include-numbers');
+        const includeSymbolsCheckbox = document.getElementById('include-symbols');
+        const generatedPasswordDiv = document.getElementById('generated-password');
+        const copyPasswordBtn = document.getElementById('copy-password-btn');
+
+        function generatePassword() {
+            const length = parseInt(passwordLengthInput.value);
+            const includeNumbers = includeNumbersCheckbox.checked;
+            const includeSymbols = includeSymbolsCheckbox.checked;
+
+            const lowerCaseChars = 'abcdefghijklmnopqrstuvwxyz';
+            const upperCaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const numberChars = '0123456789';
+            const symbolChars = '!@#$%^&*()_+[]{}|;:,.<>?';
+
+            let allChars = lowerCaseChars + upperCaseChars;
+            if (includeNumbers) allChars += numberChars;
+            if (includeSymbols) allChars += symbolChars;
+
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * allChars.length);
+                password += allChars[randomIndex];
+            }
+            generatedPasswordDiv.textContent = password;
+        }
+
+        function copyPasswordToClipboard() {
+            const password = generatedPasswordDiv.textContent;
+            if (password) {
+                // Use document.execCommand('copy') for better iframe compatibility
+                const textarea = document.createElement('textarea');
+                textarea.value = password;
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    // In a real app, you might show a "Copied!" message
+                } catch (err) {
+                    console.error('Failed to copy text: ', err);
+                }
+                document.body.removeChild(textarea);
+            }
+        }
+
+        generatePasswordBtn.addEventListener('click', generatePassword);
+        copyPasswordBtn.addEventListener('click', copyPasswordToClipboard);
+        // Generate a password on load
+        generatePassword();
+
+        // --- Study Timer Logic ---
+        let timerInterval;
+        let timeLeft = 0;
+        let isRunning = false;
+
+        const timerDisplay = document.getElementById('timer-display');
+        const timerMinutesInput = document.getElementById('timer-minutes');
+        const startTimerBtn = document.getElementById('start-timer-btn');
+        const pauseTimerBtn = document.getElementById('pause-timer-btn');
+        const resetTimerBtn = document.getElementById('reset-timer-btn');
+
+        // Function to update the timer display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Function to start the timer
+        function startTimer() {
+            if (isRunning) return; // Prevent multiple intervals
+            if (timeLeft === 0) { // If timer is at 0, set initial time
+                const minutes = parseInt(timerMinutesInput.value);
+                if (isNaN(minutes) || minutes <= 0) {
+                    timerDisplay.textContent = 'Invalid time';
+                    return;
+                }
+                timeLeft = minutes * 60;
+            }
+
+            isRunning = true;
+            timerMinutesInput.disabled = true; // Disable input while running
+            timerInterval = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timerInterval);
+                    isRunning = false;
+                    timerMinutesInput.disabled = false;
+                    timerDisplay.textContent = 'Time\'s up!';
+                    // Optionally play a sound or show a notification
+                }
+            }, 1000);
+        }
+
+        // Function to pause the timer
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            timerMinutesInput.disabled = false;
+        }
+
+        // Function to reset the timer
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            const initialMinutes = parseInt(timerMinutesInput.value);
+            timeLeft = initialMinutes * 60;
+            updateTimerDisplay();
+            timerMinutesInput.disabled = false;
+        }
+
+        // Initial display update
+        updateTimerDisplay();
+
+        // Event listeners for Study Timer
+        startTimerBtn.addEventListener('click', startTimer);
+        pauseTimerBtn.addEventListener('click', pauseTimer);
+        resetTimerBtn.addEventListener('click', resetTimer);
+        timerMinutesInput.addEventListener('change', resetTimer); // Reset if minutes changed
+
+
+        // --- Note Taker Logic ---
+        const noteContentTextarea = document.getElementById('note-content');
+        const saveNoteBtn = document.getElementById('save-note-btn');
+        const clearNoteBtn = document.getElementById('clear-note-btn');
+
+        // Load note from local storage on page load
+        function loadNote() {
+            const savedNote = localStorage.getItem('studentUtilityNote');
+            if (savedNote) {
+                noteContentTextarea.value = savedNote;
+            }
+        }
+
+        // Save note to local storage
+        function saveNote() {
+            localStorage.setItem('studentUtilityNote', noteContentTextarea.value);
+            // In a real app, you might show a "Saved!" message
+        }
+
+        // Clear note from textarea and local storage
+        function clearNote() {
+            noteContentTextarea.value = '';
+            localStorage.removeItem('studentUtilityNote');
+        }
+
+        // Event listeners for Note Taker
+        saveNoteBtn.addEventListener('click', saveNote);
+        clearNoteBtn.addEventListener('click', clearNote);
+
+        // Load note when the page loads
+        window.onload = loadNote;
+    </script>
+</body>
+</html>

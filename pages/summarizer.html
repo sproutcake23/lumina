@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Summarizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f23; /* Base dark color from quiz generator */
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+.circle {
+            position:fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.3) 70%, transparent 100%);
+            transform: translate(-50%, -50%);
+            animation: fadeOut 1s ease-out forwards;
+            z-index:4;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+        }
+
+        .main-cursor {
+            position:fixed;
+            width: 10px;
+            height: 10px;
+            border: 2px solid white;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+            z-index:4;
+        }
+
+        .background-layers {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* This will be the base for all background elements */
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* New Animated Background Elements */
+        .animated-bg {
+            position: absolute; /* Changed from fixed to work within background-layers */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3; /* Deepest layer */
+            background: linear-gradient(135deg,
+                #667eea 0%,
+                #764ba2 25%,
+                #f093fb 50%,
+                #f5576c 75%,
+                #4facfe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 9s ease infinite;
+        }
+
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.25) 0%, transparent 50%),
+                         radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.25) 0%, transparent 50%),
+                         radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.25) 0%, transparent 50%);
+            animation: float 28s ease-in-out infinite;
+        }
+
+        .floating-particles {
+            position: absolute; /* Changed from fixed */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2; 
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: floatUp 20s linear infinite;
+        }
+
+        .particle:nth-child(odd) {
+            width: 3px;
+            height: 3px;
+            background: rgba(102, 126, 234, 0.6);
+        }
+
+        .particle:nth-child(even) {
+            width: 2px;
+            height: 2px;
+            background: rgba(245, 87, 108, 0.6);
+        }
+
+        .floating-bubbles {
+            position: absolute; /* Changed from fixed */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Sits above particles and animated-bg, but below stars/nebula if they are default z-index */
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .bubble { /* Style from Quiz Generator */
+            position: absolute;
+            bottom: -150px;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.05) 70%);
+            border-radius: 50%;
+            animation: bubbleRise 20s ease-in-out infinite;
+        }
+
+
+        /* Original Background Elements */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(1px 1px at 20% 30%, white, transparent),
+                radial-gradient(1px 1px at 80% 70%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.5), transparent),
+                radial-gradient(2px 2px at 30% 85%, white, transparent),
+                radial-gradient(1.5px 1.5px at 65% 15%, white, transparent);
+            background-size: 100px 100px, 120px 120px, 80px 80px, 150px 150px, 90px 90px;
+            animation: twinkle 10s infinite linear alternate;
+            z-index: 0; /* Ensure stars are above the new layers but still in background */
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.8; }
+        }
+
+        .nebula {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle at 30% 70%, rgba(102, 126, 234, 0.08) 0%, transparent 40%), 
+                        radial-gradient(circle at 70% 30%, rgba(118, 75, 162, 0.08) 0%, transparent 40%); 
+            animation: rotateNebula 80s linear infinite; 
+            mix-blend-mode: screen;
+            opacity: 0.7;
+            z-index: 0; /* Ensure nebula is above the new layers but still in background */
+        }
+        @keyframes rotateNebula {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Keyframes from Quiz Generator */
+        @keyframes gradientShift { 
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float { 
+            0%, 100% { transform: translateY(0px) scale(1); }
+            33% { transform: translateY(-35px) scale(1.05); }
+            66% { transform: translateY(25px) scale(0.95); }
+        }
+
+        @keyframes floatUp { 
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(0deg) scale(0);
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(90vh) rotate(36deg) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translateY(10vh) rotate(324deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-10vh) rotate(360deg) scale(0);
+            }
+        }
+
+        @keyframes bubbleRise { /* Animation from Quiz Generator */
+            0% {
+                transform: translateY(0) translateX(0) scale(0.4);
+                opacity: 0;
+            }
+            5% {
+                opacity: 0.6;
+                transform: translateY(-8vh) translateX(calc(15px * var(--sway-direction, 1))) scale(0.6);
+            }
+            50% {
+                transform: translateY(-60vh) translateX(calc(70px * var(--sway-direction, 1))) scale(1);
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-110vh) translateX(calc(130px * var(--sway-direction, 1))) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        .summarizer-container {
+            background: rgba(24, 24, 40, 0.85); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(120, 119, 198, 0.3); 
+            border-radius: 20px;
+            padding: 30px 40px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            margin-top: 20px; 
+            animation: fadeInScaleUp 0.8s ease-out;
+            position: relative; 
+            z-index: 1; /* Above all background layers */
+        }
+        @keyframes fadeInScaleUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #c7d2fe; 
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .input-area, .output-area {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #a7a7cc; 
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(120, 119, 198, 0.4);
+            background-color: rgba(15, 15, 35, 0.7); 
+            color: #e0e0e0;
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #818cf8; 
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+        }
+
+        .text-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #888eb8;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-end; 
+            margin-bottom: 25px;
+            justify-content: space-between;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+            flex-grow: 1;
+            min-width: 150px; 
+        }
+
+        .control-group input[type="number"] {
+            width: 100%; 
+            max-width: 100px; 
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(120, 119, 198, 0.4);
+            background-color: rgba(15, 15, 35, 0.7);
+            color: #e0e0e0;
+            font-size: 0.9rem;
+        }
+         .control-group input[type="number"]:focus {
+            outline: none;
+            border-color: #818cf8;
+            box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.2);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #818cf8, #6366f1); 
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            background: linear-gradient(135deg, #9097fb, #7174f3);
+        }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: rgba(120, 119, 198, 0.2); 
+            color: #c7d2fe;
+            border: 1px solid rgba(120, 119, 198, 0.4);
+        }
+        .btn-secondary:hover {
+            background: rgba(120, 119, 198, 0.3);
+            border-color: rgba(120, 119, 198, 0.6);
+        }
+        
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.6);
+        }
+
+        #summaryOutput {
+            background-color: rgba(15, 15, 35, 0.7);
+            border: 1px solid rgba(120, 119, 198, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 100px;
+            text-align: left;
+            line-height: 1.7;
+            white-space: pre-wrap; 
+            word-wrap: break-word;
+        }
+        .summary-placeholder {
+            color: #888eb8;
+            font-style: italic;
+        }
+        #summaryOutput strong { 
+            color: #a5b4fc; 
+            font-weight: 700;
+            background-color: rgba(129, 140, 248, 0.15);
+            padding: 1px 3px;
+            border-radius: 3px;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(129, 140, 248, 0.3);
+            border-radius: 50%;
+            border-top-color: #818cf8;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .status-message {
+            margin-top: 15px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        .status-error {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+         .status-success {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+            border: 1px solid rgba(34, 197, 94, 0.4);
+        }
+         .status-info {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }
+
+
+        @media (max-width: 700px) {
+            .controls { flex-direction: column; align-items: stretch; }
+            .btn { width: 100%; }
+            #summarizeBtn { margin-top: 10px; } 
+            .control-group { min-width: 0; width: 100%; }
+            .control-group input[type="number"] { width: 100%; max-width: none; }
+        }
+        @media (max-width: 600px) {
+            .summarizer-container { padding: 20px; }
+            .title { font-size: 1.8rem; margin-bottom: 20px;}
+            textarea { min-height: 120px; }
+            #summaryOutput { min-height: 80px; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="background-layers">
+        <div class="animated-bg"></div>
+        <div class="floating-particles" id="particles"></div>
+        <div class="floating-bubbles" id="bubbles-container"></div>
+        <div class="stars"></div>
+        <div class="nebula"></div>
+        <!-- bubbles-bg from previous summarizer can be removed if floating-bubbles is preferred -->
+        <!-- <div class="bubbles-bg"></div> -->
+    </div>
+<div class="main-cursor" id="mainCursor"></div>
+    <div class="summarizer-container">
+        <h1 class="title">Concept Summarizer</h1>
+
+        <div class="input-area">
+            <label for="inputText">Paste or type your text here:</label>
+            <textarea id="inputText" placeholder="Enter the concept or text you want to summarize..."></textarea>
+            <div class="text-stats">
+                <span class="char-count" id="inputCharCount">Chars: 0</span>
+                <span class="word-count" id="inputWordCount">Words: 0</span>
+                <span class="sentence-count" id="inputSentenceCount">Sentences: 0</span>
+            </div>
+            <button id="clearTextBtn" class="btn btn-danger" style="width: auto; padding: 8px 15px; font-size: 0.9rem; margin-top: 5px;">Clear Text</button>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="sentenceCount">Summary Length (sentences):</label>
+                <input type="number" id="sentenceCount" value="3" min="1" max="20">
+            </div>
+            <div class="control-group">
+                <label for="keywordCount">Keywords to Highlight:</label>
+                <input type="number" id="keywordCount" value="5" min="0" max="10">
+            </div>
+            <button id="summarizeBtn" class="btn btn-primary">
+                <span id="summarizeBtnIcon">✨</span>
+                <span id="summarizeBtnText">Summarize</span>
+            </button>
+        </div>
+         <div id="statusMessage" class="status-message" style="display: none;" role="alert" aria-live="assertive"></div>
+
+
+        <div class="output-area">
+            <label for="summaryOutput">Generated Summary:</label>
+            <div id="summaryOutput"><p class="summary-placeholder">Your summary will appear here...</p></div>
+            <div class="text-stats" style="margin-top: 10px;">
+                 <span class="char-count" id="summaryCharCount">Chars: 0</span>
+                 <span class="word-count" id="summaryWordCount">Words: 0</span>
+                 <span class="sentence-count" id="summarySentenceCount">Sentences: 0</span>
+            </div>
+            <div style="text-align: right; margin-top: 10px;">
+                 <button id="copySummaryBtn" class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem;" disabled>📋 Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+const mainCursor = document.getElementById('mainCursor');
+        let circles = [];
+
+        // Track mouse movement
+        document.addEventListener('mousemove', (e) => {
+            // Update main cursor position
+            mainCursor.style.left = e.clientX + 'px';
+            mainCursor.style.top = e.clientY + 'px';
+
+            // Create trailing circle
+            createCircle(e.clientX, e.clientY);
+        });
+
+        function createCircle(x, y) {
+            const circle = document.createElement('div');
+            circle.className = 'circle';
+            
+            // Random size between 10-30px
+            const size = Math.random() * 10 + 5;
+            circle.style.width = size + 'px';
+            circle.style.height = size + 'px';
+            
+            // Position the circle
+            circle.style.left = x + 'px';
+            circle.style.top = y + 'px';
+            
+            // Random color tint
+            const hue = Math.random() * 360;
+            circle.style.background = `radial-gradient(circle, hsla(${hue}, 70%, 80%, 0.8) 0%, hsla(${hue}, 70%, 80%, 0.3) 70%, transparent 100%)`;
+            
+            document.body.appendChild(circle);
+            circles.push(circle);
+
+            // Remove circle after animation completes
+            setTimeout(() => {
+                if (circle.parentNode) {
+                    circle.parentNode.removeChild(circle);
+                }
+                circles = circles.filter(c => c !== circle);
+            }, 1000);
+        }
+
+        // Clean up circles periodically to prevent memory issues
+        setInterval(() => {
+            circles.forEach(circle => {
+                if (!circle.parentNode) {
+                    circles = circles.filter(c => c !== circle);
+                }
+            });
+        }, 5000);
+
+        // Hide cursor when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            mainCursor.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            mainCursor.style.opacity = '1';
+        });
+        const inputText = document.getElementById('inputText');
+        const summarizeBtn = document.getElementById('summarizeBtn');
+        const summarizeBtnIcon = document.getElementById('summarizeBtnIcon');
+        const summarizeBtnText = document.getElementById('summarizeBtnText');
+        
+        const summaryOutput = document.getElementById('summaryOutput');
+        const sentenceCountInput = document.getElementById('sentenceCount');
+        const keywordCountInput = document.getElementById('keywordCount');
+        const clearTextBtn = document.getElementById('clearTextBtn');
+
+        const inputCharCount = document.getElementById('inputCharCount');
+        const inputWordCount = document.getElementById('inputWordCount');
+        const inputSentenceCount = document.getElementById('inputSentenceCount');
+
+        const summaryCharCount = document.getElementById('summaryCharCount');
+        const summaryWordCount = document.getElementById('summaryWordCount');
+        const summarySentenceCount = document.getElementById('summarySentenceCount');
+
+        const copySummaryBtn = document.getElementById('copySummaryBtn');
+        const statusMessage = document.getElementById('statusMessage');
+
+        const STOP_WORDS = new Set([
+            'a', 'able', 'about', 'above', 'across', 'after', 'again', 'against', 'all', 'almost', 'alone', 'along', 'already', 'also', 'although', 'always', 'am', 'among', 'an', 'and', 'any', 'anyone', 'anything', 'anywhere', 'are', 'area', 'areas', 'around', 'as', 'ask', 'asked', 'asking', 'asks', 'at', 'away', 'b', 'back', 'backed', 'backing', 'backs', 'be', 'became', 'because', 'become', 'becomes', 'been', 'before', 'began', 'behind', 'being', 'beings', 'below', 'best', 'better', 'between', 'big', 'both', 'but', 'by', 'c', 'came', 'can', 'cannot', 'case', 'cases', 'certain', 'certainly', 'clear', 'clearly', 'come', 'could', 'd', 'dear', 'did', 'differ', 'different', 'differently', 'do', 'does', 'done', 'down', 'downed', 'downing', 'downs', 'during', 'e', 'each', 'early', 'either', 'end', 'ended', 'ending', 'ends', 'enough', 'even', 'evenly', 'ever', 'every', 'everybody', 'everyone', 'everything', 'everywhere', 'f', 'face', 'faces', 'fact', 'facts', 'far', 'felt', 'few', 'find', 'finds', 'first', 'for', 'four', 'from', 'full', 'fully', 'further', 'furthered', 'furthering', 'furthers', 'g', 'gave', 'general', 'generally', 'get', 'gets', 'give', 'given', 'gives', 'go', 'going', 'good', 'goods', 'got', 'great', 'greater', 'greatest', 'group', 'grouped', 'grouping', 'groups', 'h', 'had', 'has', 'have', 'having', 'he', 'her', 'here', 'herself', 'high', 'higher', 'highest', 'him', 'himself', 'his', 'how', 'however', 'i', 'if', 'important', 'in', 'interest', 'interested', 'interesting', 'interests', 'into', 'is', 'it', 'its', 'itself', 'j', 'just', 'k', 'keep', 'keeps', 'kind', 'knew', 'know', 'known', 'knows', 'l', 'large', 'largely', 'last', 'later', 'latest', 'least', 'less', 'let', 'lets', 'like', 'likely', 'long', 'longer', 'longest', 'm', 'made', 'make', 'making', 'man', 'many', 'may', 'me', 'member', 'members', 'men', 'might', 'more', 'most', 'mostly', 'mr', 'mrs', 'much', 'must', 'my', 'myself', 'n', 'necessary', 'need', 'needed', 'needing', 'needs', 'never', 'new', 'newer', 'newest', 'next', 'no', 'nobody', 'non', 'noone', 'nor', 'not', 'nothing', 'now', 'nowhere', 'number', 'numbers', 'o', 'of', 'off', 'often', 'old', 'older', 'oldest', 'on', 'once', 'one', 'only', 'open', 'opened', 'opening', 'opens', 'or', 'order', 'ordered', 'ordering', 'orders', 'other', 'others', 'our', 'out', 'over', 'p', 'part', 'parted', 'parting', 'parts', 'per', 'perhaps', 'place', 'places', 'point', 'pointed', 'pointing', 'points', 'possible', 'present', 'presented', 'presenting', 'presents', 'problem', 'problems', 'put', 'puts', 'q', 'quite', 'r', 'rather', 'really', 'right', 'room', 'rooms', 's', 'said', 'same', 'saw', 'say', 'says', 'second', 'seconds', 'see', 'seem', 'seemed', 'seeming', 'seems', 'sees', 'several', 'shall', 'she', 'should', 'show', 'showed', 'showing', 'shows', 'side', 'sides', 'since', 'small', 'smaller', 'smallest', 'so', 'some', 'somebody', 'someone', 'something', 'somewhere', 'state', 'states', 'still', 'such', 'sure', 't', 'take', 'taken', 'than', 'that', 'the', 'their', 'them', 'then', 'there', 'therefore', 'these', 'they', 'thing', 'things', 'think', 'thinks', 'this', 'those', 'though', 'thought', 'thoughts', 'three', 'through', 'thus', 'to', 'today', 'together', 'too', 'took', 'toward', 'turn', 'turned', 'turning', 'turns', 'two', 'u', 'under', 'until', 'up', 'upon', 'us', 'use', 'used', 'uses', 'v', 'very', 'w', 'want', 'wanted', 'wanting', 'wants', 'was', 'way', 'ways', 'we', 'well', 'wells', 'went', 'were', 'what', 'when', 'where', 'whether', 'which', 'while', 'who', 'whole', 'whom', 'whose', 'why', 'will', 'with', 'within', 'without', 'work', 'worked', 'working', 'works', 'would', 'x', 'y', 'year', 'years', 'yet', 'you', 'young', 'younger', 'youngest', 'your', 'yours', 'z',
+            '.', ',', ';', ':', '?', '!', '-', '"', "'", '(', ')', '[', ']', '{', '}', '\n', '\r'
+        ]);
+
+        function updateSummarizeButtonState() {
+            summarizeBtn.disabled = inputText.value.trim() === '';
+        }
+
+        function setButtonLoadingState(isLoading) {
+            if (isLoading) {
+                summarizeBtnIcon.innerHTML = '<span class="loading-spinner"></span>';
+                summarizeBtnText.textContent = 'Summarizing...';
+                summarizeBtn.disabled = true; 
+            } else {
+                summarizeBtnIcon.innerHTML = '✨'; 
+                summarizeBtnText.textContent = 'Summarize';
+                updateSummarizeButtonState(); 
+            }
+        }
+
+        function updateTextStats(textAreaElement, charCountElement, wordCountElement, sentenceCountElement) {
+            const text = textAreaElement.value;
+            charCountElement.textContent = `Chars: ${text.length}`;
+            const trimmedText = text.trim();
+            const words = trimmedText ? trimmedText.split(/\s+/).filter(word => word.length > 0) : [];
+            wordCountElement.textContent = `Words: ${words.length}`;
+            const sentences = splitIntoSentences(text);
+            sentenceCountElement.textContent = `Sentences: ${sentences.length}`;
+        }
+        
+        inputText.addEventListener('input', () => {
+            updateTextStats(inputText, inputCharCount, inputWordCount, inputSentenceCount);
+            updateSummarizeButtonState();
+        });
+
+        clearTextBtn.addEventListener('click', () => {
+            inputText.value = '';
+            updateTextStats(inputText, inputCharCount, inputWordCount, inputSentenceCount);
+            summaryOutput.innerHTML = '<p class="summary-placeholder">Your summary will appear here...</p>';
+            summaryCharCount.textContent = 'Chars: 0';
+            summaryWordCount.textContent = 'Words: 0';
+            summarySentenceCount.textContent = 'Sentences: 0';
+            copySummaryBtn.disabled = true;
+            statusMessage.style.display = 'none';
+            updateSummarizeButtonState();
+        });
+
+
+        function showStatus(message, type = 'error', duration = 4000) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message status-${type}`;
+            statusMessage.style.display = 'block';
+            if (duration > 0) { 
+                 setTimeout(() => {
+                    statusMessage.style.display = 'none';
+                }, duration);
+            }
+        }
+        
+        function splitIntoSentences(text) {
+            if (!text) return [];
+            const trimmedText = text.trim();
+            if (!trimmedText) return [];
+            const sentences = trimmedText.match(/[^.!?]+(?:[.!?](?:["']|\s|$)|[.!?]$)/g);
+            return sentences ? sentences.map(s => s.trim()).filter(s => s.length > 0) : (trimmedText.length > 0 ? [trimmedText] : []);
+        }
+
+        function getWordFrequencies(sentences) {
+            const wordFrequencies = {};
+            sentences.forEach(sentence => {
+                const words = sentence.toLowerCase().replace(/[^a-z0-9\s'-]/g, "").split(/\s+/);
+                words.forEach(word => {
+                    const cleanWord = word.replace(/^['"]+|['"]+$/g, ''); 
+                    if (cleanWord && !STOP_WORDS.has(cleanWord) && cleanWord.length > 1) { 
+                        wordFrequencies[cleanWord] = (wordFrequencies[cleanWord] || 0) + 1;
+                    }
+                });
+            });
+            return wordFrequencies;
+        }
+
+        summarizeBtn.addEventListener('click', async () => {
+            const text = inputText.value.trim();
+            
+            const desiredSentenceCount = parseInt(sentenceCountInput.value, 10);
+            const minSentenceCount = parseInt(sentenceCountInput.min, 10);
+            const maxSentenceCount = parseInt(sentenceCountInput.max, 10);
+
+            const desiredKeywordCount = parseInt(keywordCountInput.value, 10);
+            const minKeywordCount = parseInt(keywordCountInput.min, 10);
+            const maxKeywordCount = parseInt(keywordCountInput.max, 10);
+
+            if (!text) { 
+                showStatus('Please enter some text to summarize.');
+                summaryOutput.innerHTML = '<p class="summary-placeholder">Please enter text above to get a summary.</p>';
+                summaryCharCount.textContent = 'Chars: 0'; summaryWordCount.textContent = 'Words: 0'; summarySentenceCount.textContent = 'Sentences: 0';
+                copySummaryBtn.disabled = true;
+                return;
+            }
+            if (isNaN(desiredSentenceCount) || desiredSentenceCount < minSentenceCount || desiredSentenceCount > maxSentenceCount) {
+                showStatus(`Summary length must be between ${minSentenceCount} and ${maxSentenceCount} sentences.`, 'error'); return;
+            }
+            if (isNaN(desiredKeywordCount) || desiredKeywordCount < minKeywordCount || desiredKeywordCount > maxKeywordCount) {
+                showStatus(`Keywords to highlight must be between ${minKeywordCount} and ${maxKeywordCount}.`, 'error'); return;
+            }
+
+            setButtonLoadingState(true);
+            summaryOutput.innerHTML = '<p class="summary-placeholder">Processing your text...</p>';
+            copySummaryBtn.disabled = true;
+            statusMessage.style.display = 'none'; 
+
+            try {
+                await new Promise(resolve => setTimeout(resolve, 300)); 
+
+                const sentences = splitIntoSentences(text);
+                updateTextStats(inputText, inputCharCount, inputWordCount, inputSentenceCount); 
+
+                if (sentences.length === 0 && text.length > 0) { 
+                     sentences.push(text); 
+                }
+
+                if (sentences.length === 0) {
+                    summaryOutput.innerHTML = '<p class="summary-placeholder">Could not find any sentences in the provided text.</p>';
+                    summaryCharCount.textContent = 'Chars: 0'; summaryWordCount.textContent = 'Words: 0'; summarySentenceCount.textContent = 'Sentences: 0';
+                    showStatus('No usable sentences found in the text.', 'info');
+                    return; 
+                }
+                
+                if (sentences.length <= desiredSentenceCount) {
+                    const freqs = getWordFrequencies(sentences); 
+                    summaryOutput.innerHTML = highlightKeywordsInText(text, freqs, desiredKeywordCount);
+                    copySummaryBtn.disabled = text.length === 0;
+                    summaryCharCount.textContent = `Chars: ${text.length}`;
+                    const summaryWords = text.trim().split(/\s+/).filter(w => w.length > 0);
+                    summaryWordCount.textContent = `Words: ${summaryWords.length}`;
+                    summarySentenceCount.textContent = `Sentences: ${sentences.length}`; 
+                    showStatus('Input text is already short or meets desired summary length.', 'info');
+                    return; 
+                }
+
+                const wordFrequencies = getWordFrequencies(sentences);
+
+                const sentenceScores = sentences.map((sentence, index) => {
+                    const words = sentence.toLowerCase().replace(/[^a-z0-9\s'-]/g, "").split(/\s+/);
+                    let score = 0;
+                    words.forEach(word => {
+                        const cleanWord = word.replace(/^['"]+|['"]+$/g, '');
+                        if (wordFrequencies[cleanWord]) { 
+                            score += wordFrequencies[cleanWord];
+                        }
+                    });
+                    score *= (1 - (index / sentences.length) * 0.15); 
+                    return { sentence, score, originalIndex: index };
+                });
+
+                sentenceScores.sort((a, b) => b.score - a.score);
+                
+                let numSentencesToTake = Math.min(desiredSentenceCount, sentences.length);
+                const topSentencesData = sentenceScores.slice(0, numSentencesToTake);
+                topSentencesData.sort((a,b) => a.originalIndex - b.originalIndex); 
+                
+                let summaryText = topSentencesData.map(s => s.sentence.trim()).join(' ');
+                
+                summaryOutput.innerHTML = highlightKeywordsInText(summaryText, wordFrequencies, desiredKeywordCount);
+
+                summaryCharCount.textContent = `Chars: ${summaryText.length}`;
+                const summaryWordsArr = summaryText.trim().split(/\s+/).filter(w => w.length > 0);
+                summaryWordCount.textContent = `Words: ${summaryWordsArr.length}`;
+                summarySentenceCount.textContent = `Sentences: ${topSentencesData.length}`;
+                copySummaryBtn.disabled = !summaryText;
+                showStatus('Summary generated successfully!', 'success', 2500);
+
+            } catch (error) {
+                console.error("Summarization error:", error);
+                summaryOutput.innerHTML = '<p class="summary-placeholder" style="color: #fca5a5;">Could not generate summary. Please try again.</p>';
+                showStatus('An error occurred during summarization.', 'error');
+            } finally {
+                setButtonLoadingState(false);
+            }
+        });
+
+        function highlightKeywordsInText(text, wordFrequencies, keywordCount) {
+            if (keywordCount === 0 || !text) return escapeHtml(text);
+
+            const sortedKeywords = Object.entries(wordFrequencies)
+                .sort(([,a],[,b]) => b-a)
+                .slice(0, keywordCount)
+                .map(([word]) => word)
+                .filter(word => word.length > 1); 
+
+            if (sortedKeywords.length === 0) return escapeHtml(text);
+
+            let highlightedText = escapeHtml(text); 
+            sortedKeywords.forEach(keyword => {
+                const regex = new RegExp(`\\b(${escapeRegExp(keyword)})\\b`, 'gi');
+                highlightedText = highlightedText.replace(regex, '<strong>$1</strong>');
+            });
+            return highlightedText;
+        }
+        
+        function escapeHtml(unsafe) {
+            if (typeof unsafe !== 'string') return ''; 
+            return unsafe
+                 .replace(/&/g, "&")
+                 .replace(/</g, "<")
+                 .replace(/>/g, ">")
+                 .replace(/"/g, '"')
+                 .replace(/'/g, "'");
+        }
+
+        function escapeRegExp(string) {
+            if (typeof string !== 'string') return '';
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+
+        copySummaryBtn.addEventListener('click', () => {
+            const summaryTextToCopy = summaryOutput.textContent; 
+            if (summaryTextToCopy && !summaryOutput.querySelector('.summary-placeholder')) {
+                navigator.clipboard.writeText(summaryTextToCopy)
+                    .then(() => {
+                        showStatus('Summary copied to clipboard!', 'success', 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                        showStatus('Failed to copy summary. Ensure permissions are granted or try manual copy.', 'error');
+                    });
+            }
+        });
+        
+        // Particle and Bubble creation (from Quiz Generator)
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles'); // Assuming you'll add this div
+            if (!particlesContainer) {
+                 console.warn("Particle container not found. Ensure you have <div class=\"floating-particles\" id=\"particles\"></div>");
+                 return;
+            }
+            particlesContainer.innerHTML = ''; // Clear existing if any
+            for (let i = 0; i < 60; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 15 + 15) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        function createNewBubbles() { // Renamed to avoid conflict if you had 'createBubbles'
+            const bubblesContainer = document.getElementById('bubbles-container'); // Assuming you'll add this div
+             if (!bubblesContainer) {
+                 console.warn("Bubbles container not found. Ensure you have <div class=\"floating-bubbles\" id=\"bubbles-container\"></div>");
+                 return;
+            }
+            bubblesContainer.innerHTML = ''; // Clear existing if any
+            const numBubbles = 25;
+
+            for (let i = 0; i < numBubbles; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                
+                const size = Math.random() * 50 + 15;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = Math.random() * 100 + 'vw';
+                
+                const duration = Math.random() * 10 + 15;
+                bubble.style.animationDuration = `${duration}s`;
+                bubble.style.animationDelay = Math.random() * 15 + 's';
+                
+                bubble.style.setProperty('--sway-direction', Math.random() > 0.5 ? '1' : '-1');
+
+                bubblesContainer.appendChild(bubble);
+            }
+        }
+        
+        // Initial setup
+        updateTextStats(inputText, inputCharCount, inputWordCount, inputSentenceCount);
+        updateSummarizeButtonState();
+        createParticles(); 
+        createNewBubbles(); 
+
+    </script>
+</body>
+</html>
